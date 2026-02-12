@@ -3,23 +3,23 @@ pipeline {
 
     stages {
 
-        stage('Clone Repository') {
-            steps {
-                git 'https://github.com/ashishbangar20/Ashish_oragneHRM_Automation.git'
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
-                sh 'pip3 install -r requirements.txt'
+                sh '''
+                python3 -m venv venv
+                source venv/bin/activate
+                pip install -r requirements.txt
+                '''
             }
         }
 
         stage('Run Automation Tests') {
             steps {
-                sh 'pytest'
+                sh '''
+                source venv/bin/activate
+                pytest
+                '''
             }
         }
-
     }
 }
