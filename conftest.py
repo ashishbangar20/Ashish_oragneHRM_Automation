@@ -12,33 +12,36 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from pytest_metadata.plugin import metadata_key
+from utilities.config_reader import ReadConfig
 
 # ================= CLI OPTIONS ================= #
-def pytest_addoption(parser):
 
+def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="chrome")
     parser.addoption("--headless", action="store", default="false")
-    parser.addoption("--env", action="store", default="qa")
+
 
 @pytest.fixture()
 def browser(request):
     return request.config.getoption("--browser")
 
+
 @pytest.fixture()
 def headless(request):
     return request.config.getoption("--headless").lower() == "true"
 
-@pytest.fixture()
-def environment(request):
-    return request.config.getoption("--env")
 
 # ================= DRIVER SETUP ================= #
+
 @pytest.fixture()
 def setup(browser, headless):
+
+    browser = browser.lower()
     driver = None
 
-    # -------- Chrome -------- #
+    # -------- CHROME -------- #
     if browser == "chrome":
+
         options = ChromeOptions()
 
         if headless:
@@ -48,58 +51,76 @@ def setup(browser, headless):
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-gpu")
         options.add_argument("--window-size=1920,1080")
-        options.add_argument("--disable-infobars")
-        options.add_argument("--disable-notifications")
+        options.add_argument("--remote-allow-origins=*")
 
-        driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),options=options)
+        driver_path = ChromeDriverManager().install()
 
-    # -------- Firefox -------- #
+        # Mac webdriver fix
+        if "THIRD_PARTY" in driver_path:
+            driver_path = driver_path.replace(
+                "THIRD_PARTY_NOTICES.chromedriver",
+                "chromedriver"
+            )
+
+        driver = webdriver.Chrome(
+            service=ChromeService(driver_path),
+            options=options
+        )
+
+    # -------- FIREFOX -------- #
     elif browser == "firefox":
+
         options = FirefoxOptions()
 
         if headless:
             options.add_argument("--headless")
 
-        driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()),options=options)
+        driver = webdriver.Firefox(
+            service=FirefoxService(GeckoDriverManager().install()),
+            options=options
+        )
 
-    # -------- Edge -------- #
+    # -------- EDGE -------- #
     elif browser == "edge":
+
         options = EdgeOptions()
 
         if headless:
             options.add_argument("--headless=new")
 
-        driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()),options=options)
+        driver = webdriver.Edge(
+            service=EdgeService(EdgeChromiumDriverManager().install()),
+            options=options
+        )
 
     else:
-        raise ValueError("Browser not supported")
+        raise ValueError(f"Browser not supported: {browser}")
 
-    driver.maximize_window()
-    driver.implicitly_wait(10)
+    driver.set_page_load_timeout(30)
+    driver.get(ReadConfig.get_url())
 
     yield driver
     driver.quit()
 
+
 # ================= HTML REPORT ================= #
+
 def pytest_configure(config):
 
-    if not os.path.exists("reports"):
-        os.makedirs("reports")
+    os.makedirs("reports", exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    report_path = f"reports/OrangeHRM_Report_{timestamp}.html"
-
-    config.option.htmlpath = report_path
+    config.option.htmlpath = f"reports/report_{timestamp}.html"
     config.option.self_contained_html = True
 
-    # Metadata
     if hasattr(config, "stash"):
         config.stash[metadata_key]["Project"] = "OrangeHRM Automation"
         config.stash[metadata_key]["Tester"] = "Ashish"
-        config.stash[metadata_key]["Framework"] = "Pytest + Selenium"
         config.stash[metadata_key]["Execution"] = "CI/CD"
 
+
 # ================= SCREENSHOT ON FAILURE ================= #
+
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):
 
@@ -111,22 +132,19 @@ def pytest_runtest_makereport(item):
         driver = item.funcargs.get("setup")
 
         if driver:
-            screenshots_dir = "screenshots"
-            os.makedirs(screenshots_dir, exist_ok=True)
+            os.makedirs("screenshots", exist_ok=True)
 
             file_name = f"{item.name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
-            file_path = os.path.join(screenshots_dir, file_name)
-            driver.save_screenshot(file_path)
+            driver.save_screenshot(os.path.join("screenshots", file_name))
 
 
 # ================= OPEN REPORT LOCALLY ================= #
+
 def pytest_sessionfinish(session, exitstatus):
 
     htmlpath = session.config.option.htmlpath
 
-    # Jenkins / Docker me browser open nahi hona chahiye
     if htmlpath and os.getenv("JENKINS_HOME") is None:
 
         import webbrowser
-        abs_path = os.path.abspath(htmlpath)
-        webbrowser.open_new_tab(f"file://{abs_path}")
+        webbrowser.open_new_tab(f"file://{os.path.abspath(htmlpath)}")

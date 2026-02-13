@@ -190,3 +190,70 @@
 2026-02-12 08:04:08,916 - INFO - Row 5 | Username: WrongUser | Expected: Invalid
 2026-02-12 08:04:13,769 - INFO - Invalid login correctly failed
 2026-02-12 08:04:13,789 - INFO - ========== DDT Login Test Completed ==========
+2026-02-13 07:57:14,684 - INFO - Test Login Started
+2026-02-13 07:57:28,379 - INFO - ========== Starting DDT Login Test ==========
+2026-02-13 07:57:28,416 - INFO - Row 2 | Username: Admin | Expected: Valid
+2026-02-13 07:57:41,906 - INFO - ====== Starting Parametrized Login Test ======
+2026-02-13 07:57:41,907 - INFO - Username: Admin
+2026-02-13 07:57:41,907 - INFO - Expected: Valid
+2026-02-13 07:57:56,135 - INFO - ====== Starting Parametrized Login Test ======
+2026-02-13 07:57:56,136 - INFO - Username: Admin
+2026-02-13 07:57:56,136 - INFO - Expected: Invalid
+2026-02-13 07:58:10,248 - INFO - ====== Starting Parametrized Login Test ======
+2026-02-13 07:58:10,249 - INFO - Username: WrongUser
+2026-02-13 07:58:10,249 - INFO - Expected: Invalid
+2026-02-13 07:58:24,185 - INFO - ====== Starting Parametrized Login Test ======
+2026-02-13 07:58:24,186 - INFO - Username: WrongUser
+2026-02-13 07:58:24,186 - INFO - Expected: Invalid
+2026-02-13 07:58:38,226 - INFO - Invalid Login Test Started
+2026-02-13 08:06:31,031 - INFO - Test Login Started
+2026-02-13 08:06:35,386 - INFO - Login Test Passed
+2026-02-13 08:06:44,181 - INFO - ========== Starting DDT Login Test ==========
+2026-02-13 08:06:44,238 - INFO - Row 2 | Username: Admin | Expected: Valid
+2026-02-13 08:06:48,720 - INFO - Valid login successful
+2026-02-13 08:07:10,268 - INFO - ====== Starting Parametrized Login Test ======
+2026-02-13 08:07:10,286 - INFO - Username: Admin
+2026-02-13 08:07:10,286 - INFO - Expected: Valid
+2026-02-13 08:07:14,380 - INFO - Login Passed
+2026-02-13 08:07:35,285 - INFO - ====== Starting Parametrized Login Test ======
+2026-02-13 08:07:35,306 - INFO - Username: Admin
+2026-02-13 08:07:35,306 - INFO - Expected: Invalid
+2026-02-13 08:07:39,372 - INFO - Invalid Login Correct
+2026-02-13 08:07:50,908 - INFO - ====== Starting Parametrized Login Test ======
+2026-02-13 08:07:50,928 - INFO - Username: WrongUser
+2026-02-13 08:07:50,929 - INFO - Expected: Invalid
+2026-02-13 08:07:54,972 - INFO - Invalid Login Correct
+2026-02-13 08:08:04,479 - INFO - ====== Starting Parametrized Login Test ======
+2026-02-13 08:08:04,500 - INFO - Username: WrongUser
+2026-02-13 08:08:04,501 - INFO - Expected: Invalid
+2026-02-13 08:08:08,374 - INFO - Invalid Login Correct
+2026-02-13 08:08:20,414 - INFO - Invalid Login Test Started
+2026-02-13 08:10:58,104 - INFO - Test Login Started
+2026-02-13 08:11:02,801 - INFO - Login Test Passed
+2026-02-13 08:11:11,067 - INFO - ========== Starting DDT Login Test ==========
+2026-02-13 08:11:11,092 - INFO - Row 2 | Username: Admin | Expected: Valid
+2026-02-13 08:11:16,793 - INFO - Valid login successful
+2026-02-13 08:11:20,028 - INFO - Row 3 | Username: Admin | Expected: Valid
+2026-02-13 08:11:24,232 - INFO - Valid login successful
+2026-02-13 08:11:27,635 - INFO - Row 4 | Username: Admin | Expected: Invalid
+2026-02-13 08:11:32,554 - INFO - Invalid login correctly failed
+2026-02-13 08:11:32,587 - INFO - Row 5 | Username: WrongUser | Expected: Invalid
+2026-02-13 08:11:36,346 - INFO - Invalid login correctly failed
+2026-02-13 08:11:36,366 - INFO - ========== DDT Login Test Completed ==========
+2026-02-13 08:11:50,429 - INFO - ====== Starting Parametrized Login Test ======
+2026-02-13 08:11:50,447 - INFO - Username: Admin
+2026-02-13 08:11:50,447 - INFO - Expected: Valid
+2026-02-13 08:11:56,255 - INFO - Login Passed
+2026-02-13 08:12:07,492 - INFO - ====== Starting Parametrized Login Test ======
+2026-02-13 08:12:07,514 - INFO - Username: Admin
+2026-02-13 08:12:07,514 - INFO - Expected: Invalid
+2026-02-13 08:12:13,931 - INFO - Invalid Login Correct
+2026-02-13 08:12:26,376 - INFO - ====== Starting Parametrized Login Test ======
+2026-02-13 08:12:26,393 - INFO - Username: WrongUser
+2026-02-13 08:12:26,393 - INFO - Expected: Invalid
+2026-02-13 08:12:29,956 - INFO - Invalid Login Correct
+2026-02-13 08:12:39,548 - INFO - ====== Starting Parametrized Login Test ======
+2026-02-13 08:12:39,549 - INFO - Username: WrongUser
+2026-02-13 08:12:39,549 - INFO - Expected: Invalid
+2026-02-13 08:12:44,694 - INFO - Invalid Login Correct
+2026-02-13 08:12:57,355 - INFO - Invalid Login Test Started
