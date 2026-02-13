@@ -2,11 +2,6 @@ pipeline {
 
     agent any
 
-    options {
-        timestamps()
-        buildDiscarder(logRotator(numToKeepStr: '5'))
-    }
-
     environment {
         VENV = "venv"
         REPORT_DIR = "reports"
@@ -35,39 +30,22 @@ pipeline {
             steps {
                 sh '''
                 source $VENV/bin/activate
-                pytest -n 2 --html=$REPORT_DIR/report.html --self-contained-html
+                pytest --html=$REPORT_DIR/report.html --self-contained-html
                 '''
             }
         }
 
-        stage('Publish HTML Report') {
+        stage('Publish Report') {
             steps {
-                publishHTML([
+                publishHTML(target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
                     reportDir: 'reports',
                     reportFiles: 'report.html',
-                    reportName: 'Automation Test Report'
+                    reportName: 'Automation Report'
                 ])
             }
-        }
-
-    }
-
-    post {
-
-        always {
-            echo "Build Completed"
-        }
-
-        success {
-            echo "Automation Tests Passed"
-        }
-
-        failure {
-            echo "Automation Tests Failed"
-        }
-
-        cleanup {
-            cleanWs()
         }
     }
 }
