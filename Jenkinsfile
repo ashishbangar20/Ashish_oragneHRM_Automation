@@ -7,6 +7,7 @@ pipeline {
         REPORT_DIR = "reports"
         BROWSER = "chrome"
         HEADLESS = "true"
+        WORKERS = "4"      // 👈 Parallel threads count
     }
 
     options {
@@ -40,16 +41,19 @@ pipeline {
         // ================= Run Automation Tests =================
         stage('Run Automation Tests') {
             steps {
-                echo "Executing Pytest Automation in Headless Mode..."
+                echo "Executing Pytest Automation in Headless + Parallel Mode..."
                 sh '''
                 . $VENV/bin/activate
                 mkdir -p $REPORT_DIR
 
                 pytest \
+                -n $WORKERS \
+                --dist=loadfile \
                 --browser=$BROWSER \
                 --headless=$HEADLESS \
                 --html=$REPORT_DIR/report.html \
-                --self-contained-html
+                --self-contained-html \
+                -v
                 '''
             }
         }
