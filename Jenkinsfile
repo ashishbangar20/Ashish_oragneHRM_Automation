@@ -3,11 +3,12 @@ pipeline {
     agent any
 
     environment {
-        VENV = "venv"
+        IMAGE_NAME = "orangehrm-automation"
+        CONTAINER_NAME = "orangehrm-container"
         REPORT_DIR = "reports"
+        WORKERS = "4"
         BROWSER = "chrome"
         HEADLESS = "true"
-        WORKERS = "4"      // 👈 Parallel threads count
     }
 
     options {
@@ -17,52 +18,58 @@ pipeline {
 
     stages {
 
-        // ================= Checkout Code =================
+        // ================= Checkout =================
         stage('Checkout Code') {
             steps {
-                echo "Cloning Git Repository..."
+                echo "📥 Cloning Repository..."
                 checkout scm
             }
         }
 
-        // ================= Setup Python Environment =================
-        stage('Setup Python Environment') {
+        // ================= Clean Old Container =================
+        stage('Clean Old Container') {
             steps {
-                echo "Creating Virtual Environment & Installing Dependencies..."
-                sh '''
-                python3 -m venv $VENV
-                . $VENV/bin/activate
-                pip install --upgrade pip
-                pip install -r requirements.txt
-                '''
+                sh 'docker rm -f $CONTAINER_NAME || true'
             }
         }
 
-        // ================= Run Automation Tests =================
-        stage('Run Automation Tests') {
+        // ================= Build Docker Image =================
+        stage('Build Docker Image') {
             steps {
-                echo "Executing Pytest Automation in Headless + Parallel Mode..."
-                sh '''
-                . $VENV/bin/activate
+                echo "🐳 Building Docker Image..."
+                sh 'docker build -t $IMAGE_NAME .'
+            }
+        }
+
+        // ================= Run Tests =================
+        stage('Run Tests in Docker') {
+            steps {
+                echo "🚀 Running Tests Inside Docker Container..."
+
+                sh """
                 mkdir -p $REPORT_DIR
 
-                pytest \
-                -n $WORKERS \
-                --dist=loadfile \
+                docker run --rm \
+                --name $CONTAINER_NAME \
+                -v \$(pwd)/$REPORT_DIR:/app/$REPORT_DIR \
+                $IMAGE_NAME \
+                pytest -n $WORKERS \
                 --browser=$BROWSER \
                 --headless=$HEADLESS \
                 --html=$REPORT_DIR/report.html \
                 --self-contained-html \
                 -v
-                '''
+                """
             }
         }
 
-        // ================= Publish HTML Report =================
-        stage('Publish Test Report') {
+        // ================= Publish Report =================
+        stage('Publish HTML Report') {
             steps {
+                echo "📊 Publishing HTML Report..."
+
                 publishHTML([
-                    allowMissing: true,
+                    allowMissing: false,
                     alwaysLinkToLastBuild: true,
                     keepAll: true,
                     reportDir: 'reports',
@@ -73,25 +80,19 @@ pipeline {
         }
     }
 
-    // ================= Post Build Actions =================
     post {
 
         always {
-            echo "Archiving Reports..."
+            echo "📦 Archiving Report..."
             archiveArtifacts artifacts: 'reports/*.html', fingerprint: true
         }
 
         success {
-            echo "✅ Automation Tests Passed Successfully"
+            echo "✅ Automation Passed in Docker"
         }
 
         failure {
-            echo "❌ Automation Tests Failed"
-        }
-
-        cleanup {
-            echo "Cleaning Workspace..."
-            cleanWs()
+            echo "❌ Automation Failed in Docker"
         }
     }
 }

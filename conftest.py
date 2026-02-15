@@ -32,8 +32,9 @@ def headless(request):
 def setup(browser, headless):
 
     driver = None
+    grid_url = os.getenv("GRID_URL")   # 🔥 If Docker/Grid used
 
-    # -------- CHROME -------- #
+    # ---------------- CHROME ---------------- #
     if browser == "chrome":
 
         options = ChromeOptions()
@@ -46,9 +47,16 @@ def setup(browser, headless):
         options.add_argument("--disable-gpu")
         options.add_argument("--window-size=1920,1080")
 
-        driver = webdriver.Chrome(options=options)
+        # 🔥 If running in Docker/Grid
+        if grid_url:
+            driver = webdriver.Remote(
+                command_executor=grid_url,
+                options=options
+            )
+        else:
+            driver = webdriver.Chrome(options=options)
 
-    # -------- FIREFOX -------- #
+    # ---------------- FIREFOX ---------------- #
     elif browser == "firefox":
 
         options = FirefoxOptions()
@@ -56,9 +64,15 @@ def setup(browser, headless):
         if headless:
             options.add_argument("--headless")
 
-        driver = webdriver.Firefox(options=options)
+        if grid_url:
+            driver = webdriver.Remote(
+                command_executor=grid_url,
+                options=options
+            )
+        else:
+            driver = webdriver.Firefox(options=options)
 
-    # -------- EDGE -------- #
+    # ---------------- EDGE ---------------- #
     elif browser == "edge":
 
         options = EdgeOptions()
@@ -66,7 +80,13 @@ def setup(browser, headless):
         if headless:
             options.add_argument("--headless=new")
 
-        driver = webdriver.Edge(options=options)
+        if grid_url:
+            driver = webdriver.Remote(
+                command_executor=grid_url,
+                options=options
+            )
+        else:
+            driver = webdriver.Edge(options=options)
 
     else:
         raise ValueError(f"Browser not supported: {browser}")
@@ -119,6 +139,7 @@ def pytest_sessionfinish(session, exitstatus):
 
     htmlpath = session.config.option.htmlpath
 
-    if htmlpath and os.getenv("JENKINS_HOME") is None:
+    # Only open locally (not Jenkins / Docker)
+    if htmlpath and os.getenv("JENKINS_HOME") is None and os.getenv("GRID_URL") is None:
         import webbrowser
         webbrowser.open_new_tab(f"file://{os.path.abspath(htmlpath)}")
