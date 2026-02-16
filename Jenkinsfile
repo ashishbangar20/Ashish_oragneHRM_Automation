@@ -19,11 +19,6 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '10'))
     }
 
-    triggers {
-        // Optional: Daily run at 2 AM
-        // cron('H 2 * * *')
-    }
-
     stages {
 
         stage('Verify Docker Installation') {
