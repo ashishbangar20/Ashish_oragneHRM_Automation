@@ -10,6 +10,7 @@ pipeline {
 
     environment {
         DOCKER = "/usr/local/bin/docker"
+        DOCKER_HOST = "unix:///Users/ashish/.docker/run/docker.sock"
         DOCKER_CONFIG = "${WORKSPACE}/.docker-temp"
         IMAGE_NAME = "orangehrm-automation"
         CONTAINER_NAME = "orangehrm-container"
@@ -23,18 +24,14 @@ pipeline {
 
     stages {
 
-        stage('Prepare Clean Docker Config') {
+        stage('Prepare Docker Environment') {
             steps {
                 sh '''
                 mkdir -p $DOCKER_CONFIG
                 echo '{}' > $DOCKER_CONFIG/config.json
+                export DOCKER_HOST=$DOCKER_HOST
+                $DOCKER --version
                 '''
-            }
-        }
-
-        stage('Verify Docker') {
-            steps {
-                sh '$DOCKER --version'
             }
         }
 
@@ -46,19 +43,26 @@ pipeline {
 
         stage('Clean Old Container') {
             steps {
-                sh '$DOCKER rm -f $CONTAINER_NAME || true'
+                sh '''
+                export DOCKER_HOST=$DOCKER_HOST
+                $DOCKER rm -f $CONTAINER_NAME || true
+                '''
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh '$DOCKER build -t ${IMAGE_NAME}:${BUILD_NUMBER} .'
+                sh '''
+                export DOCKER_HOST=$DOCKER_HOST
+                $DOCKER build -t ${IMAGE_NAME}:${BUILD_NUMBER} .
+                '''
             }
         }
 
         stage('Run Tests in Docker') {
             steps {
                 sh '''
+                export DOCKER_HOST=$DOCKER_HOST
                 mkdir -p $REPORT_DIR
 
                 $DOCKER run --rm \
@@ -91,7 +95,10 @@ pipeline {
 
     post {
         always {
-            sh '$DOCKER rm -f $CONTAINER_NAME || true'
+            sh '''
+            export DOCKER_HOST=$DOCKER_HOST
+            $DOCKER rm -f $CONTAINER_NAME || true
+            '''
         }
 
         success {
