@@ -2,15 +2,16 @@ pipeline {
 
     agent any
 
+    parameters {
+        string(name: 'WORKERS', defaultValue: '4', description: 'Number of parallel workers')
+        choice(name: 'BROWSER', choices: ['chrome', 'firefox'], description: 'Select browser')
+        choice(name: 'HEADLESS', choices: ['true', 'false'], description: 'Run in headless mode')
+    }
+
     environment {
-        DOCKER = "/usr/local/bin/docker"
-        DOCKER_HOST = "unix:///Users/ashish/.docker/run/docker.sock"
         IMAGE_NAME = "orangehrm-automation"
         CONTAINER_NAME = "orangehrm-container"
         REPORT_DIR = "reports"
-        WORKERS = "4"
-        BROWSER = "chrome"
-        HEADLESS = "true"
     }
 
     options {
@@ -18,15 +19,17 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '10'))
     }
 
+    triggers {
+        // Optional: Daily run at 2 AM
+        // cron('H 2 * * *')
+    }
+
     stages {
 
-        stage('Verify Docker Connection') {
+        stage('Verify Docker Installation') {
             steps {
-                sh '''
-                echo "Using Docker Host: $DOCKER_HOST"
-                export DOCKER_HOST=$DOCKER_HOST
-                $DOCKER info
-                '''
+                sh 'docker --version'
+                sh 'docker info'
             }
         }
 
@@ -38,35 +41,28 @@ pipeline {
 
         stage('Clean Old Container') {
             steps {
-                sh '''
-                export DOCKER_HOST=$DOCKER_HOST
-                $DOCKER rm -f $CONTAINER_NAME || true
-                '''
+                sh 'docker rm -f $CONTAINER_NAME || true'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh '''
-                export DOCKER_HOST=$DOCKER_HOST
-                $DOCKER build --no-cache -t $IMAGE_NAME .
-                '''
+                sh 'docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .'
             }
         }
 
         stage('Run Tests in Docker') {
             steps {
                 sh '''
-                export DOCKER_HOST=$DOCKER_HOST
                 mkdir -p $REPORT_DIR
 
-                $DOCKER run --rm \
+                docker run --rm \
                 --name $CONTAINER_NAME \
                 -v $(pwd)/$REPORT_DIR:/app/$REPORT_DIR \
-                $IMAGE_NAME \
-                pytest -n $WORKERS \
-                --browser=$BROWSER \
-                --headless=$HEADLESS \
+                ${IMAGE_NAME}:${BUILD_NUMBER} \
+                pytest -n ${params.WORKERS} \
+                --browser=${params.BROWSER} \
+                --headless=${params.HEADLESS} \
                 --html=$REPORT_DIR/report.html \
                 --self-contained-html \
                 -v
@@ -90,10 +86,15 @@ pipeline {
 
     post {
         always {
-            sh '''
-            export DOCKER_HOST=$DOCKER_HOST
-            $DOCKER rm -f $CONTAINER_NAME || true
-            '''
+            sh 'docker rm -f $CONTAINER_NAME || true'
+        }
+
+        success {
+            echo "Build SUCCESS ✅"
+        }
+
+        failure {
+            echo "Build FAILED ❌"
         }
     }
 }
