@@ -26,12 +26,12 @@ pipeline {
 
         stage('Prepare Docker Environment') {
             steps {
-                sh '''
+                sh """
                 mkdir -p $DOCKER_CONFIG
                 echo '{}' > $DOCKER_CONFIG/config.json
                 export DOCKER_HOST=$DOCKER_HOST
                 $DOCKER --version
-                '''
+                """
             }
         }
 
@@ -43,39 +43,41 @@ pipeline {
 
         stage('Clean Old Container') {
             steps {
-                sh '''
+                sh """
                 export DOCKER_HOST=$DOCKER_HOST
                 $DOCKER rm -f $CONTAINER_NAME || true
-                '''
+                """
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh '''
+                sh """
                 export DOCKER_HOST=$DOCKER_HOST
                 $DOCKER build -t ${IMAGE_NAME}:${BUILD_NUMBER} .
-                '''
+                """
             }
         }
 
         stage('Run Tests in Docker') {
             steps {
-                sh '''
-                export DOCKER_HOST=$DOCKER_HOST
-                mkdir -p $REPORT_DIR
+                script {
+                    sh """
+                    export DOCKER_HOST=$DOCKER_HOST
+                    mkdir -p $REPORT_DIR
 
-                $DOCKER run --rm \
-                --name $CONTAINER_NAME \
-                -v $(pwd)/$REPORT_DIR:/app/$REPORT_DIR \
-                ${IMAGE_NAME}:${BUILD_NUMBER} \
-                pytest -n ${params.WORKERS} \
-                --browser=${params.BROWSER} \
-                --headless=${params.HEADLESS} \
-                --html=$REPORT_DIR/report.html \
-                --self-contained-html \
-                -v
-                '''
+                    $DOCKER run --rm \
+                    --name $CONTAINER_NAME \
+                    -v \$(pwd)/$REPORT_DIR:/app/$REPORT_DIR \
+                    ${IMAGE_NAME}:${BUILD_NUMBER} \
+                    pytest -n ${params.WORKERS} \
+                    --browser=${params.BROWSER} \
+                    --headless=${params.HEADLESS} \
+                    --html=$REPORT_DIR/report.html \
+                    --self-contained-html \
+                    -v
+                    """
+                }
             }
         }
 
@@ -95,10 +97,10 @@ pipeline {
 
     post {
         always {
-            sh '''
+            sh """
             export DOCKER_HOST=$DOCKER_HOST
             $DOCKER rm -f $CONTAINER_NAME || true
-            '''
+            """
         }
 
         success {
