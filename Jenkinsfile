@@ -15,6 +15,7 @@ pipeline {
 
     options {
         timestamps()
+        buildDiscarder(logRotator(numToKeepStr: '10'))
     }
 
     stages {
@@ -22,8 +23,8 @@ pipeline {
         stage('Verify Docker Connection') {
             steps {
                 sh '''
-                echo "Docker Host: $DOCKER_HOST"
-                $DOCKER context use desktop-linux
+                echo "Using Docker Host: $DOCKER_HOST"
+                export DOCKER_HOST=$DOCKER_HOST
                 $DOCKER info
                 '''
             }
@@ -37,28 +38,36 @@ pipeline {
 
         stage('Clean Old Container') {
             steps {
-                sh '$DOCKER rm -f $CONTAINER_NAME || true'
+                sh '''
+                export DOCKER_HOST=$DOCKER_HOST
+                $DOCKER rm -f $CONTAINER_NAME || true
+                '''
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh '$DOCKER build -t $IMAGE_NAME .'
+                sh '''
+                export DOCKER_HOST=$DOCKER_HOST
+                $DOCKER build --no-cache -t $IMAGE_NAME .
+                '''
             }
         }
 
         stage('Run Tests in Docker') {
             steps {
                 sh '''
+                export DOCKER_HOST=$DOCKER_HOST
                 mkdir -p $REPORT_DIR
 
-                $DOCKER run --name $CONTAINER_NAME \
-                -v $(pwd)/reports:/app/reports \
+                $DOCKER run --rm \
+                --name $CONTAINER_NAME \
+                -v $(pwd)/$REPORT_DIR:/app/$REPORT_DIR \
                 $IMAGE_NAME \
                 pytest -n $WORKERS \
                 --browser=$BROWSER \
                 --headless=$HEADLESS \
-                --html=reports/report.html \
+                --html=$REPORT_DIR/report.html \
                 --self-contained-html \
                 -v
                 '''
@@ -81,7 +90,10 @@ pipeline {
 
     post {
         always {
-            sh '$DOCKER rm -f $CONTAINER_NAME || true'
+            sh '''
+            export DOCKER_HOST=$DOCKER_HOST
+            $DOCKER rm -f $CONTAINER_NAME || true
+            '''
         }
     }
 }

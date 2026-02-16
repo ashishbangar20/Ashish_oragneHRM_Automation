@@ -32,7 +32,14 @@ def headless(request):
 def setup(browser, headless):
 
     driver = None
-    grid_url = os.getenv("GRID_URL")   # 🔥 If Docker/Grid used
+    grid_url = os.getenv("GRID_URL")  # If running via Selenium Grid
+    docker_env = os.getenv("DOCKER")  # Optional custom flag
+
+    print(f"\n========== Execution Info ==========")
+    print(f"Browser   : {browser}")
+    print(f"Headless  : {headless}")
+    print(f"GRID_URL  : {grid_url}")
+    print(f"====================================\n")
 
     # ---------------- CHROME ---------------- #
     if browser == "chrome":
@@ -47,7 +54,10 @@ def setup(browser, headless):
         options.add_argument("--disable-gpu")
         options.add_argument("--window-size=1920,1080")
 
-        # 🔥 If running in Docker/Grid
+        # 🔥 If running inside Docker container (chromium installed)
+        if os.path.exists("/usr/bin/chromium"):
+            options.binary_location = "/usr/bin/chromium"
+
         if grid_url:
             driver = webdriver.Remote(
                 command_executor=grid_url,
@@ -93,26 +103,31 @@ def setup(browser, headless):
 
     driver.set_page_load_timeout(30)
     driver.implicitly_wait(10)
+
     driver.get(ReadConfig.get_url())
 
     yield driver
+
     driver.quit()
 
 
-# ================= HTML REPORT ================= #
+# ================= HTML REPORT CONFIG ================= #
 
 def pytest_configure(config):
 
     os.makedirs("reports", exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    config.option.htmlpath = f"reports/report_{timestamp}.html"
+    report_path = f"reports/report_{timestamp}.html"
+
+    config.option.htmlpath = report_path
     config.option.self_contained_html = True
 
     if hasattr(config, "stash"):
         config.stash[metadata_key]["Project"] = "OrangeHRM Automation"
         config.stash[metadata_key]["Tester"] = "Ashish"
         config.stash[metadata_key]["Execution"] = "CI/CD"
+        config.stash[metadata_key]["Environment"] = "Docker/Grid/Local"
 
 
 # ================= SCREENSHOT ON FAILURE ================= #
@@ -129,8 +144,13 @@ def pytest_runtest_makereport(item):
 
         if driver:
             os.makedirs("screenshots", exist_ok=True)
+
             file_name = f"{item.name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
-            driver.save_screenshot(os.path.join("screenshots", file_name))
+            file_path = os.path.join("screenshots", file_name)
+
+            driver.save_screenshot(file_path)
+
+            print(f"Screenshot saved: {file_path}")
 
 
 # ================= OPEN REPORT LOCALLY ================= #
@@ -139,7 +159,11 @@ def pytest_sessionfinish(session, exitstatus):
 
     htmlpath = session.config.option.htmlpath
 
-    # Only open locally (not Jenkins / Docker)
-    if htmlpath and os.getenv("JENKINS_HOME") is None and os.getenv("GRID_URL") is None:
+    # Open only when running locally (not Jenkins / Docker / Grid)
+    if (
+        htmlpath
+        and os.getenv("JENKINS_HOME") is None
+        and os.getenv("GRID_URL") is None
+    ):
         import webbrowser
         webbrowser.open_new_tab(f"file://{os.path.abspath(htmlpath)}")
