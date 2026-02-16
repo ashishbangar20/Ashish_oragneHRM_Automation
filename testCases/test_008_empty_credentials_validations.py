@@ -2,9 +2,10 @@ import pytest
 from pages.login_page import LoginPage
 
 
-@pytest.mark.regression
 class TestEmptyLogin:
 
+    @pytest.mark.regression
+    @pytest.mark.sanity
     def test_empty_login(self, setup):
 
         driver = setup

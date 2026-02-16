@@ -6,14 +6,15 @@ pipeline {
         string(name: 'WORKERS', defaultValue: '4', description: 'Number of parallel workers')
         choice(name: 'BROWSER', choices: ['chrome', 'firefox'], description: 'Select browser')
         choice(name: 'HEADLESS', choices: ['true', 'false'], description: 'Run in headless mode')
+        choice(name: 'TEST_SUITE', choices: ['smoke', 'regression'], description: 'Select test suite to run')
     }
 
     environment {
         DOCKER = "/usr/local/bin/docker"
         DOCKER_HOST = "unix:///Users/ashish/.docker/run/docker.sock"
         DOCKER_CONFIG = "${WORKSPACE}/.docker-temp"
-        IMAGE_NAME = "orangehrm-automation"
-        CONTAINER_NAME = "orangehrm-container"
+        IMAGE_NAME = "Ashish-orangehrm-automation"
+        CONTAINER_NAME = "Ashish-orangehrm-container"
         REPORT_DIR = "reports"
     }
 
@@ -71,6 +72,7 @@ pipeline {
                     -v \$(pwd)/$REPORT_DIR:/app/$REPORT_DIR \
                     ${IMAGE_NAME}:${BUILD_NUMBER} \
                     pytest -n ${params.WORKERS} \
+                    -m ${params.TEST_SUITE == 'smoke' ? 'sanity' : 'regression'} \
                     --browser=${params.BROWSER} \
                     --headless=${params.HEADLESS} \
                     --html=$REPORT_DIR/report.html \

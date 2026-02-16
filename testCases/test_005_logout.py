@@ -3,9 +3,10 @@ from pages.login_page import LoginPage
 from pages.dashboard_page import DashboardPage
 
 
-@pytest.mark.sanity
 class TestLogout:
 
+    @pytest.mark.sanity
+    @pytest.mark.regression
     def test_logout(self, setup):
 
         driver = setup

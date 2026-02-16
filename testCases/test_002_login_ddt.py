@@ -16,6 +16,7 @@ class TestLoginDDT:
     sheet = "sheet_one"
 
     @pytest.mark.sanity
+    @pytest.mark.regression
     def test_login_ddt(self, setup):
 
         self.logger.info("========== Starting DDT Login Test ==========")

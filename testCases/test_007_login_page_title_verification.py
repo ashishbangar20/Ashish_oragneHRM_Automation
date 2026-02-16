@@ -1,9 +1,10 @@
 import pytest
 
 
-@pytest.mark.sanity
 class TestLoginPageUI:
 
+    @pytest.mark.regression
+    @pytest.mark.sanity
     def test_login_page_title(self, setup):
 
         driver = setup

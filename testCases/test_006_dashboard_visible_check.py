@@ -3,9 +3,10 @@ from pages.login_page import LoginPage
 from pages.dashboard_page import DashboardPage
 
 
-@pytest.mark.regression
 class TestDashboard:
 
+    @pytest.mark.sanity
+    @pytest.mark.regression
     def test_dashboard_loaded(self, setup):
 
         driver = setup
