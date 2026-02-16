@@ -13,8 +13,8 @@ pipeline {
         DOCKER = "/usr/local/bin/docker"
         DOCKER_HOST = "unix:///Users/ashish/.docker/run/docker.sock"
         DOCKER_CONFIG = "${WORKSPACE}/.docker-temp"
-        IMAGE_NAME = "Ashish-orangehrm-automation"
-        CONTAINER_NAME = "Ashish-orangehrm-container"
+        IMAGE_NAME = "ashish-orangehrm-automation"
+        CONTAINER_NAME = "ashish-orangehrm-container"
         REPORT_DIR = "reports"
     }
 
