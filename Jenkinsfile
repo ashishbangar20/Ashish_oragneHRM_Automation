@@ -10,6 +10,7 @@ pipeline {
 
     environment {
         DOCKER = "/usr/local/bin/docker"
+        DOCKER_CONFIG = "${WORKSPACE}/.docker-temp"
         IMAGE_NAME = "orangehrm-automation"
         CONTAINER_NAME = "orangehrm-container"
         REPORT_DIR = "reports"
@@ -22,10 +23,18 @@ pipeline {
 
     stages {
 
-        stage('Verify Docker Installation') {
+        stage('Prepare Clean Docker Config') {
+            steps {
+                sh '''
+                mkdir -p $DOCKER_CONFIG
+                echo '{}' > $DOCKER_CONFIG/config.json
+                '''
+            }
+        }
+
+        stage('Verify Docker') {
             steps {
                 sh '$DOCKER --version'
-                sh '$DOCKER info'
             }
         }
 
