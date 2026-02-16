@@ -4,6 +4,7 @@ pipeline {
 
     environment {
         DOCKER = "/usr/local/bin/docker"
+        DOCKER_CONFIG_DIR = "/tmp/docker-config"
         IMAGE_NAME = "orangehrm-automation"
         CONTAINER_NAME = "orangehrm-container"
         REPORT_DIR = "reports"
@@ -26,9 +27,20 @@ pipeline {
             }
         }
 
+        stage('Prepare Docker Environment') {
+            steps {
+                echo "🧹 Preparing Clean Docker Config..."
+                sh '''
+                rm -rf $DOCKER_CONFIG_DIR
+                mkdir -p $DOCKER_CONFIG_DIR
+                '''
+            }
+        }
+
         stage('Clean Old Container') {
             steps {
                 sh '''
+                export DOCKER_CONFIG=$DOCKER_CONFIG_DIR
                 $DOCKER rm -f $CONTAINER_NAME || true
                 '''
             }
@@ -38,6 +50,7 @@ pipeline {
             steps {
                 echo "🐳 Building Docker Image..."
                 sh '''
+                export DOCKER_CONFIG=$DOCKER_CONFIG_DIR
                 $DOCKER build -t $IMAGE_NAME .
                 '''
             }
@@ -47,15 +60,16 @@ pipeline {
             steps {
                 echo "🚀 Running Tests Inside Docker..."
                 sh '''
+                export DOCKER_CONFIG=$DOCKER_CONFIG_DIR
                 mkdir -p $REPORT_DIR
 
                 $DOCKER run --name $CONTAINER_NAME \
-                -v $(pwd)/reports:/app/reports \
+                -v $(pwd)/$REPORT_DIR:/app/$REPORT_DIR \
                 $IMAGE_NAME \
                 pytest -n $WORKERS \
                 --browser=$BROWSER \
                 --headless=$HEADLESS \
-                --html=reports/report.html \
+                --html=$REPORT_DIR/report.html \
                 --self-contained-html \
                 -v
                 '''
@@ -77,10 +91,14 @@ pipeline {
     }
 
     post {
+
         always {
             echo "📦 Archiving Report..."
             archiveArtifacts artifacts: 'reports/*.html', fingerprint: true
-            sh '$DOCKER rm -f $CONTAINER_NAME || true'
+            sh '''
+            export DOCKER_CONFIG=$DOCKER_CONFIG_DIR
+            $DOCKER rm -f $CONTAINER_NAME || true
+            '''
         }
 
         success {
