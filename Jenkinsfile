@@ -9,6 +9,7 @@ pipeline {
     }
 
     environment {
+        DOCKER = "/usr/local/bin/docker"
         IMAGE_NAME = "orangehrm-automation"
         CONTAINER_NAME = "orangehrm-container"
         REPORT_DIR = "reports"
@@ -23,8 +24,8 @@ pipeline {
 
         stage('Verify Docker Installation') {
             steps {
-                sh 'docker --version'
-                sh 'docker info'
+                sh '$DOCKER --version'
+                sh '$DOCKER info'
             }
         }
 
@@ -36,13 +37,13 @@ pipeline {
 
         stage('Clean Old Container') {
             steps {
-                sh 'docker rm -f $CONTAINER_NAME || true'
+                sh '$DOCKER rm -f $CONTAINER_NAME || true'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .'
+                sh '$DOCKER build -t ${IMAGE_NAME}:${BUILD_NUMBER} .'
             }
         }
 
@@ -51,7 +52,7 @@ pipeline {
                 sh '''
                 mkdir -p $REPORT_DIR
 
-                docker run --rm \
+                $DOCKER run --rm \
                 --name $CONTAINER_NAME \
                 -v $(pwd)/$REPORT_DIR:/app/$REPORT_DIR \
                 ${IMAGE_NAME}:${BUILD_NUMBER} \
@@ -81,7 +82,7 @@ pipeline {
 
     post {
         always {
-            sh 'docker rm -f $CONTAINER_NAME || true'
+            sh '$DOCKER rm -f $CONTAINER_NAME || true'
         }
 
         success {
