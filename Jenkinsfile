@@ -62,38 +62,24 @@ pipeline {
 
         stage('Run Tests in Docker') {
             steps {
-                script {
+                sh """
+                export DOCKER_HOST=$DOCKER_HOST
+                mkdir -p $REPORT_DIR
 
-                    // Default → smoke (smoke marker)
-                    def marker = "smoke"
+                echo "Running Test Suite: ${params.TEST_SUITE}"
 
-                    // If triggered by cron (nightly build) → full regression
-                    if (currentBuild.rawBuild.getCause(hudson.triggers.TimerTrigger$TimerTriggerCause)) {
-                        marker = "regression"
-                    }
-
-                    // If manually selected regression from dropdown
-                    if (params.TEST_SUITE == "regression") {
-                        marker = "regression"
-                    }
-
-                    sh """
-                    export DOCKER_HOST=$DOCKER_HOST
-                    mkdir -p $REPORT_DIR
-
-                    $DOCKER run --rm \
-                    --name $CONTAINER_NAME \
-                    -v \$(pwd)/$REPORT_DIR:/app/$REPORT_DIR \
-                    ${IMAGE_NAME}:${BUILD_NUMBER} \
-                    pytest -n ${params.WORKERS} \
-                    -m ${marker} \
-                    --browser=${params.BROWSER} \
-                    --headless=${params.HEADLESS} \
-                    --html=$REPORT_DIR/report.html \
-                    --self-contained-html \
-                    -v
-                    """
-                }
+                $DOCKER run --rm \
+                --name $CONTAINER_NAME \
+                -v \$(pwd)/$REPORT_DIR:/app/$REPORT_DIR \
+                ${IMAGE_NAME}:${BUILD_NUMBER} \
+                pytest -n ${params.WORKERS} \
+                -m ${params.TEST_SUITE} \
+                --browser=${params.BROWSER} \
+                --headless=${params.HEADLESS} \
+                --html=$REPORT_DIR/report.html \
+                --self-contained-html \
+                -v
+                """
             }
         }
 
