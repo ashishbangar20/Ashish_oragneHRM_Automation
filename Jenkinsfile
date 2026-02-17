@@ -10,19 +10,31 @@ pipeline {
     }
 
     environment {
+        DOCKER = "/usr/local/bin/docker"
+        DOCKER_HOST = "unix:///Users/ashish/.docker/run/docker.sock"
+        DOCKER_CONFIG = "${WORKSPACE}/.docker-temp"
         IMAGE_NAME = "ashish-orangehrm-automation"
         CONTAINER_NAME = "ashish-orangehrm-container"
         REPORT_DIR = "reports"
-        EMAIL_RECIPIENT = "ashishbangar20@gmail.com"
     }
 
     options {
         timestamps()
         buildDiscarder(logRotator(numToKeepStr: '10'))
-        ansiColor('xterm')
     }
 
     stages {
+
+        stage('Prepare Docker Environment') {
+            steps {
+                sh """
+                mkdir -p $DOCKER_CONFIG
+                echo '{}' > $DOCKER_CONFIG/config.json
+                export DOCKER_HOST=$DOCKER_HOST
+                $DOCKER --version
+                """
+            }
+        }
 
         stage('Checkout Code') {
             steps {
@@ -30,43 +42,44 @@ pipeline {
             }
         }
 
-        stage('Clean Old Docker Container') {
+        stage('Clean Old Container') {
             steps {
-                sh '''
-                docker rm -f $CONTAINER_NAME || true
-                '''
+                sh """
+                export DOCKER_HOST=$DOCKER_HOST
+                $DOCKER rm -f $CONTAINER_NAME || true
+                """
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh '''
-                docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .
-                '''
+                sh """
+                export DOCKER_HOST=$DOCKER_HOST
+                $DOCKER build -t ${IMAGE_NAME}:${BUILD_NUMBER} .
+                """
             }
         }
 
         stage('Run Tests in Docker') {
             steps {
-                sh '''
+                sh """
+                export DOCKER_HOST=$DOCKER_HOST
                 mkdir -p $REPORT_DIR
 
-                echo "Running Test Suite: ${TEST_SUITE}"
-                echo "Browser: ${BROWSER}"
-                echo "Workers: ${WORKERS}"
+                echo "Running Test Suite: ${params.TEST_SUITE}"
 
-                docker run --rm \
+                $DOCKER run --rm \
                 --name $CONTAINER_NAME \
-                -v $(pwd)/$REPORT_DIR:/app/$REPORT_DIR \
+                -v \$(pwd)/$REPORT_DIR:/app/$REPORT_DIR \
                 ${IMAGE_NAME}:${BUILD_NUMBER} \
-                pytest -n ${WORKERS} \
-                -m ${TEST_SUITE} \
-                --browser=${BROWSER} \
-                --headless=${HEADLESS} \
+                pytest -n ${params.WORKERS} \
+                -m ${params.TEST_SUITE} \
+                --browser=${params.BROWSER} \
+                --headless=${params.HEADLESS} \
                 --html=$REPORT_DIR/report.html \
                 --self-contained-html \
                 -v
-                '''
+                """
             }
         }
 
@@ -85,56 +98,47 @@ pipeline {
     }
 
     post {
+    always {
+        sh """
+        export DOCKER_HOST=$DOCKER_HOST
+        $DOCKER rm -f $CONTAINER_NAME || true
+        """
+    }
 
-        always {
-            sh 'docker rm -f $CONTAINER_NAME || true'
-            archiveArtifacts artifacts: 'reports/report.html', allowEmptyArchive: true
-        }
+    success {
+        emailext(
+            subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+            body: """
+Build Successful
 
-        success {
-            emailext(
-                subject: "✅ SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                body: """
-Build Successful 🎉
-
-Job Name: ${env.JOB_NAME}
+Job: ${env.JOB_NAME}
 Build Number: ${env.BUILD_NUMBER}
 Test Suite: ${params.TEST_SUITE}
 Browser: ${params.BROWSER}
-Headless: ${params.HEADLESS}
 
-HTML Report:
-${env.BUILD_URL}HTML_20Report/
-
-Console Output:
+Console:
 ${env.BUILD_URL}console
 """,
-                to: "${EMAIL_RECIPIENT}",
-                attachmentsPattern: 'reports/report.html'
-            )
-        }
+            to: "ashishbangar20@gmail.com"
+        )
+    }
 
-        failure {
-            emailext(
-                subject: "❌ FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                body: """
-Build Failed ❌
+    failure {
+        emailext(
+            subject: "FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+            body: """
+Build Failed
 
-Job Name: ${env.JOB_NAME}
+Job: ${env.JOB_NAME}
 Build Number: ${env.BUILD_NUMBER}
 Test Suite: ${params.TEST_SUITE}
 Browser: ${params.BROWSER}
-Headless: ${params.HEADLESS}
 
-Check Console:
+Console:
 ${env.BUILD_URL}console
-
-HTML Report:
-${env.BUILD_URL}HTML_20Report/
 """,
-                to: "${EMAIL_RECIPIENT}",
-                attachmentsPattern: 'reports/report.html'
-            )
-        }
+            to: "ashishbangar20@gmail.com"
+        )
     }
 }
+
