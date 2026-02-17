@@ -5,7 +5,7 @@ from pages.dashboard_page import DashboardPage
 
 class TestDashboard:
 
-    @pytest.mark.sanity
+    @pytest.mark.smoke
     @pytest.mark.regression
     def test_dashboard_loaded(self, setup):
 

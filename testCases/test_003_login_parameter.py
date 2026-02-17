@@ -17,7 +17,7 @@ class TestLoginParametrized:
     ]
 
     @pytest.mark.regression
-    @pytest.mark.sanity
+    @pytest.mark.smoke
     @pytest.mark.parametrize("username,password,expected", test_data)
     def test_login_param(self, setup, username, password, expected):
 

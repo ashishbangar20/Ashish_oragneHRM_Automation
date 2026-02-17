@@ -15,7 +15,7 @@ class TestLoginDDT:
     file = TEST_DATA_PATH
     sheet = "sheet_one"
 
-    @pytest.mark.sanity
+    @pytest.mark.smoke
     @pytest.mark.regression
     def test_login_ddt(self, setup):
 

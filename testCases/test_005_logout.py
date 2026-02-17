@@ -5,7 +5,7 @@ from pages.dashboard_page import DashboardPage
 
 class TestLogout:
 
-    @pytest.mark.sanity
+    @pytest.mark.smoke
     @pytest.mark.regression
     def test_logout(self, setup):
 

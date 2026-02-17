@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title id="head-title">report_2026-02-16_22-24-20.html</title>
+      <style type="text/css">body {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  /* do not increase min-width as some may use split screens */
+  min-width: 800px;
+  color: #999;
+}
+
+h1 {
+  font-size: 24px;
+  color: black;
+}
+
+h2 {
+  font-size: 16px;
+  color: black;
+}
+
+p {
+  color: black;
+}
+
+a {
+  color: #999;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+/******************************
+ * SUMMARY INFORMATION
+ ******************************/
+#environment td {
+  padding: 5px;
+  border: 1px solid #e6e6e6;
+  vertical-align: top;
+}
+#environment tr:nth-child(odd) {
+  background-color: #f6f6f6;
+}
+#environment ul {
+  margin: 0;
+  padding: 0 20px;
+}
+
+/******************************
+ * TEST RESULT COLORS
+ ******************************/
+span.passed,
+.passed .col-result {
+  color: green;
+}
+
+span.skipped,
+span.xfailed,
+span.rerun,
+.skipped .col-result,
+.xfailed .col-result,
+.rerun .col-result {
+  color: orange;
+}
+
+span.error,
+span.failed,
+span.xpassed,
+.error .col-result,
+.failed .col-result,
+.xpassed .col-result {
+  color: red;
+}
+
+.col-links__extra {
+  margin-right: 3px;
+}
+
+/******************************
+ * RESULTS TABLE
+ *
+ * 1. Table Layout
+ * 2. Extra
+ * 3. Sorting items
+ *
+ ******************************/
+/*------------------
+ * 1. Table Layout
+ *------------------*/
+#results-table {
+  border: 1px solid #e6e6e6;
+  color: #999;
+  font-size: 12px;
+  width: 100%;
+}
+#results-table th,
+#results-table td {
+  padding: 5px;
+  border: 1px solid #e6e6e6;
+  text-align: left;
+}
+#results-table th {
+  font-weight: bold;
+}
+
+/*------------------
+ * 2. Extra
+ *------------------*/
+.logwrapper {
+  max-height: 230px;
+  overflow-y: scroll;
+  background-color: #e6e6e6;
+}
+.logwrapper.expanded {
+  max-height: none;
+}
+.logwrapper.expanded .logexpander:after {
+  content: "collapse [-]";
+}
+.logwrapper .logexpander {
+  z-index: 1;
+  position: sticky;
+  top: 10px;
+  width: max-content;
+  border: 1px solid;
+  border-radius: 3px;
+  padding: 5px 7px;
+  margin: 10px 0 10px calc(100% - 80px);
+  cursor: pointer;
+  background-color: #e6e6e6;
+}
+.logwrapper .logexpander:after {
+  content: "expand [+]";
+}
+.logwrapper .logexpander:hover {
+  color: #000;
+  border-color: #000;
+}
+.logwrapper .log {
+  min-height: 40px;
+  position: relative;
+  top: -50px;
+  height: calc(100% + 50px);
+  border: 1px solid #e6e6e6;
+  color: black;
+  display: block;
+  font-family: "Courier New", Courier, monospace;
+  padding: 5px;
+  padding-right: 80px;
+  white-space: pre-wrap;
+}
+
+div.media {
+  border: 1px solid #e6e6e6;
+  float: right;
+  height: 240px;
+  margin: 0 5px;
+  overflow: hidden;
+  width: 320px;
+}
+
+.media-container {
+  display: grid;
+  grid-template-columns: 25px auto 25px;
+  align-items: center;
+  flex: 1 1;
+  overflow: hidden;
+  height: 200px;
+}
+
+.media-container--fullscreen {
+  grid-template-columns: 0px auto 0px;
+}
+
+.media-container__nav--right,
+.media-container__nav--left {
+  text-align: center;
+  cursor: pointer;
+}
+
+.media-container__viewport {
+  cursor: pointer;
+  text-align: center;
+  height: inherit;
+}
+.media-container__viewport img,
+.media-container__viewport video {
+  object-fit: cover;
+  width: 100%;
+  max-height: 100%;
+}
+
+.media__name,
+.media__counter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex: 0 0 25px;
+  align-items: center;
+}
+
+.collapsible td:not(.col-links) {
+  cursor: pointer;
+}
+.collapsible td:not(.col-links):hover::after {
+  color: #bbb;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.col-result {
+  width: 130px;
+}
+.col-result:hover::after {
+  content: " (hide details)";
+}
+
+.col-result.collapsed:hover::after {
+  content: " (show details)";
+}
+
+#environment-header h2:hover::after {
+  content: " (hide details)";
+  color: #bbb;
+  font-style: italic;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+#environment-header.collapsed h2:hover::after {
+  content: " (show details)";
+  color: #bbb;
+  font-style: italic;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+/*------------------
+ * 3. Sorting items
+ *------------------*/
+.sortable {
+  cursor: pointer;
+}
+.sortable.desc:after {
+  content: " ";
+  position: relative;
+  left: 5px;
+  bottom: -12.5px;
+  border: 10px solid #4caf50;
+  border-bottom: 0;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+.sortable.asc:after {
+  content: " ";
+  position: relative;
+  left: 5px;
+  bottom: 12.5px;
+  border: 10px solid #4caf50;
+  border-top: 0;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+
+.hidden, .summary__reload__button.hidden {
+  display: none;
+}
+
+.summary__data {
+  flex: 0 0 550px;
+}
+.summary__reload {
+  flex: 1 1;
+  display: flex;
+  justify-content: center;
+}
+.summary__reload__button {
+  flex: 0 0 300px;
+  display: flex;
+  color: white;
+  font-weight: bold;
+  background-color: #4caf50;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.summary__reload__button:hover {
+  background-color: #46a049;
+}
+.summary__spacer {
+  flex: 0 0 550px;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.filters,
+.collapse {
+  display: flex;
+  align-items: center;
+}
+.filters button,
+.collapse button {
+  color: #999;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.filters button:hover,
+.collapse button:hover {
+  color: #ccc;
+}
+
+.filter__label {
+  margin-right: 10px;
+}
+
+      </style>
+    
+  </head>
+  <body>
+    <h1 id="title">report_2026-02-16_22-24-20.html</h1>
+    <p>Report generated on 16-Feb-2026 at 22:31:39 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a>
+        v4.1.1</p>
+    <div id="environment-header">
+      <h2>Environment</h2>
+    </div>
+    <table id="environment"></table>
+    <!-- TEMPLATES -->
+      <template id="template_environment_row">
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+    </template>
+    <template id="template_results-table__body--empty">
+      <tbody class="results-table-row">
+        <tr id="not-found-message">
+          <td colspan="4">No results found. Check the filters.</th>
+        </tr>
+    </template>
+    <template id="template_results-table__tbody">
+      <tbody class="results-table-row">
+        <tr class="collapsible">
+        </tr>
+        <tr class="extras-row">
+          <td class="extra" colspan="4">
+            <div class="extraHTML"></div>
+            <div class="media">
+              <div class="media-container">
+                  <div class="media-container__nav--left"><</div>
+                  <div class="media-container__viewport">
+                    <img src="" />
+                    <video controls>
+                      <source src="" type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="media-container__nav--right">></div>
+                </div>
+                <div class="media__name"></div>
+                <div class="media__counter"></div>
+            </div>
+            <div class="logwrapper">
+              <div class="logexpander"></div>
+              <div class="log"></div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </template>
+    <!-- END TEMPLATES -->
+    <div class="summary">
+      <div class="summary__data">
+        <h2>Summary</h2>
+        <div class="additional-summary prefix">
+        </div>
+        <p class="run-count">7 tests took 00:07:16.</p>
+        <p class="filter">(Un)check the boxes to filter the results.</p>
+        <div class="summary__reload">
+          <div class="summary__reload__button hidden" onclick="location.reload()">
+            <div>There are still tests running. <br />Reload this page to get the latest results!</div>
+          </div>
+        </div>
+        <div class="summary__spacer"></div>
+        <div class="controls">
+          <div class="filters">
+            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="failed" />
+            <span class="failed">3 Failed,</span>
+            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="passed" />
+            <span class="passed">4 Passed,</span>
+            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="skipped" disabled/>
+            <span class="skipped">0 Skipped,</span>
+            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="xfailed" disabled/>
+            <span class="xfailed">0 Expected failures,</span>
+            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="xpassed" disabled/>
+            <span class="xpassed">0 Unexpected passes,</span>
+            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="error" />
+            <span class="error">5 Errors,</span>
+            <input checked="true" class="filter" name="filter_checkbox" type="checkbox" data-test-result="rerun" disabled/>
+            <span class="rerun">0 Reruns</span>
+          </div>
+          <div class="collapse">
+            <button id="show_all_details">Show all details</button>&nbsp;/&nbsp;<button id="hide_all_details">Hide all details</button>
+          </div>
+        </div>
+      </div>
+      <div class="additional-summary summary">
+      </div>
+      <div class="additional-summary postfix">
+      </div>
+    </div>
+    <table id="results-table">
+      <thead id="results-table-head">
+        <tr>
+          <th class="sortable" data-column-type="result">Result</th>
+          <th class="sortable" data-column-type="testId">Test</th>
+          <th class="sortable" data-column-type="duration">Duration</th>
+          <th>Links</th>
+        </tr>
+      </thead>
+    </table>
+  </body>
+  <footer>
+    <div id="data-container" data-jsonblob="{&#34;environment&#34;: {&#34;Python&#34;: &#34;3.13.9&#34;, &#34;Platform&#34;: &#34;macOS-15.6.1-x86_64-i386-64bit-Mach-O&#34;, &#34;Packages&#34;: {&#34;pytest&#34;: &#34;7.4.4&#34;, &#34;pluggy&#34;: &#34;1.6.0&#34;}, &#34;Plugins&#34;: {&#34;rerunfailures&#34;: &#34;12.0&#34;, &#34;html&#34;: &#34;4.1.1&#34;, &#34;metadata&#34;: &#34;3.1.1&#34;, &#34;xdist&#34;: &#34;3.5.0&#34;, &#34;allure-pytest&#34;: &#34;2.13.2&#34;}, &#34;Project&#34;: &#34;OrangeHRM Automation&#34;, &#34;Tester&#34;: &#34;Ashish&#34;, &#34;Execution&#34;: &#34;CI/CD&#34;, &#34;Environment&#34;: &#34;Docker/Grid/Local&#34;}, &#34;tests&#34;: {&#34;testCases/test_001_login.py::TestLogin::test_login_valid&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;testCases/test_001_login.py::TestLogin::test_login_valid&#34;, &#34;duration&#34;: &#34;00:00:50&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;testCases/test_001_login.py::TestLogin::test_login_valid&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:50&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;---------------------------- Captured stdout setup -----------------------------\n\n========== Execution Info ==========\nBrowser   : chrome\nHeadless  : False\nGRID_URL  : None\n====================================\n\n\n------------------------------ Captured log call -------------------------------\nINFO     AutomationLogger:test_001_login.py:19 Test Login Started\nINFO     AutomationLogger:test_001_login.py:33 Login Test Passed\n\n&#34;}], &#34;testCases/test_002_login_ddt.py::TestLoginDDT::test_login_ddt&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;testCases/test_002_login_ddt.py::TestLoginDDT::test_login_ddt&#34;, &#34;duration&#34;: &#34;00:00:52&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;testCases/test_002_login_ddt.py::TestLoginDDT::test_login_ddt&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:52&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;self = &amp;lt;testCases.test_002_login_ddt.TestLoginDDT object at 0x108d7ad50&amp;gt;, setup = &amp;lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&amp;quot;1db0969aa24b24ab8a5e4ea0f155aff0&amp;quot;)&amp;gt;\n\n    @pytest.mark.sanity\n    @pytest.mark.regression\n    def test_login_ddt(self, setup):\n    \n        self.logger.info(&amp;quot;========== Starting DDT Login Test ==========&amp;quot;)\n    \n        driver = setup\n        login_page = LoginPage(driver)\n        dashboard_page = DashboardPage(driver)\n    \n        rows = XLUtils.get_row_count(self.file, self.sheet)\n        test_results = []\n    \n        for r in range(2, rows + 1):\n    \n            username = XLUtils.read_data(self.file, self.sheet, r, 1)\n            password = XLUtils.read_data(self.file, self.sheet, r, 2)\n            expected = XLUtils.read_data(self.file, self.sheet, r, 3)\n    \n            self.logger.info(f&amp;quot;Row {r} | Username: {username} | Expected: {expected}&amp;quot;)\n    \n            # ---------- LOGIN ----------\n            login_page.enter_username(username)\n            login_page.enter_password(password)\n            login_page.click_login()\n    \n            time.sleep(2)\n    \n            is_dashboard = &amp;quot;dashboard&amp;quot; in driver.current_url.lower()\n    \n            # ================= VALID CASE =================\n            if expected == &amp;quot;Valid&amp;quot;:\n    \n                if is_dashboard:\n                    self.logger.info(&amp;quot;Valid login successful&amp;quot;)\n    \n                    XLUtils.write_data(self.file, self.sheet, r, 4, &amp;quot;PASS&amp;quot;)\n                    XLUtils.fill_color(self.file, self.sheet, r, 4, &amp;quot;60b212&amp;quot;)\n                    test_results.append(&amp;quot;PASS&amp;quot;)\n    \n                    # ---------- LOGOUT ----------\n&amp;gt;                   dashboard_page.click_logout()\n\ntestCases/test_002_login_ddt.py:59: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \npages/dashboard_page.py:19: in click_logout\n    self.wait.until(EC.element_to_be_clickable(self.LOGOUT_BTN)).click()\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = &amp;lt;selenium.webdriver.support.wait.WebDriverWait (session=&amp;quot;1db0969aa24b24ab8a5e4ea0f155aff0&amp;quot;)&amp;gt;\nmethod = &amp;lt;function element_to_be_clickable.&amp;lt;locals&amp;gt;._predicate at 0x10682eb60&amp;gt;, message = &amp;#x27;&amp;#x27;\n\n    def until(self, method: Callable[[D], Union[Literal[False], T]], message: str = &amp;quot;&amp;quot;) -&amp;gt; T:\n        &amp;quot;&amp;quot;&amp;quot;Calls the method provided with the driver as an argument until the \\\n        return value does not evaluate to ``False``.\n    \n        :param method: callable(WebDriver)\n        :param message: optional message for :exc:`TimeoutException`\n        :returns: the result of the last call to `method`\n        :raises: :exc:`selenium.common.exceptions.TimeoutException` if timeout occurs\n        &amp;quot;&amp;quot;&amp;quot;\n        screen = None\n        stacktrace = None\n    \n        end_time = time.monotonic() + self._timeout\n        while True:\n            try:\n                value = method(self._driver)\n                if value:\n                    return value\n            except self._ignored_exceptions as exc:\n                screen = getattr(exc, &amp;quot;screen&amp;quot;, None)\n                stacktrace = getattr(exc, &amp;quot;stacktrace&amp;quot;, None)\n            time.sleep(self._poll)\n            if time.monotonic() &amp;gt; end_time:\n                break\n&amp;gt;       raise TimeoutException(message, screen, stacktrace)\nE       selenium.common.exceptions.TimeoutException: Message:\n\n.venv/lib/python3.13/site-packages/selenium/webdriver/support/wait.py:105: TimeoutException\n\n---------------------------- Captured stdout setup -----------------------------\n\n========== Execution Info ==========\nBrowser   : chrome\nHeadless  : False\nGRID_URL  : None\n====================================\n\n\n------------------------------ Captured log call -------------------------------\nINFO     AutomationLogger:test_002_login_ddt.py:22 ========== Starting DDT Login Test ==========\nINFO     AutomationLogger:test_002_login_ddt.py:37 Row 2 | Username: Admin | Expected: Valid\nINFO     AutomationLogger:test_002_login_ddt.py:52 Valid login successful\n\n&#34;}], &#34;testCases/test_003_login_parameter.py::TestLoginParametrized::test_login_param[Admin-admin123-Valid]&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Error&#34;, &#34;testId&#34;: &#34;testCases/test_003_login_parameter.py::TestLoginParametrized::test_login_param[Admin-admin123-Valid]::setup&#34;, &#34;duration&#34;: &#34;00:00:32&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Error&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;testCases/test_003_login_parameter.py::TestLoginParametrized::test_login_param[Admin-admin123-Valid]::setup&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:32&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;browser = &amp;#x27;chrome&amp;#x27;, headless = False\n\n    @pytest.fixture()\n    def setup(browser, headless):\n    \n        driver = None\n        grid_url = os.getenv(&amp;quot;GRID_URL&amp;quot;)  # If running via Selenium Grid\n        docker_env = os.getenv(&amp;quot;DOCKER&amp;quot;)  # Optional custom flag\n    \n        print(f&amp;quot;\\n========== Execution Info ==========&amp;quot;)\n        print(f&amp;quot;Browser   : {browser}&amp;quot;)\n        print(f&amp;quot;Headless  : {headless}&amp;quot;)\n        print(f&amp;quot;GRID_URL  : {grid_url}&amp;quot;)\n        print(f&amp;quot;====================================\\n&amp;quot;)\n    \n        # ---------------- CHROME ---------------- #\n        if browser == &amp;quot;chrome&amp;quot;:\n    \n            options = ChromeOptions()\n    \n            if headless:\n                options.add_argument(&amp;quot;--headless=new&amp;quot;)\n    \n            options.add_argument(&amp;quot;--no-sandbox&amp;quot;)\n            options.add_argument(&amp;quot;--disable-dev-shm-usage&amp;quot;)\n            options.add_argument(&amp;quot;--disable-gpu&amp;quot;)\n            options.add_argument(&amp;quot;--window-size=1920,1080&amp;quot;)\n    \n            # \ud83d\udd25 If running inside Docker container (chromium installed)\n            if os.path.exists(&amp;quot;/usr/bin/chromium&amp;quot;):\n                options.binary_location = &amp;quot;/usr/bin/chromium&amp;quot;\n    \n            if grid_url:\n                driver = webdriver.Remote(\n                    command_executor=grid_url,\n                    options=options\n                )\n            else:\n                driver = webdriver.Chrome(options=options)\n    \n        # ---------------- FIREFOX ---------------- #\n        elif browser == &amp;quot;firefox&amp;quot;:\n    \n            options = FirefoxOptions()\n    \n            if headless:\n                options.add_argument(&amp;quot;--headless&amp;quot;)\n    \n            if grid_url:\n                driver = webdriver.Remote(\n                    command_executor=grid_url,\n                    options=options\n                )\n            else:\n                driver = webdriver.Firefox(options=options)\n    \n        # ---------------- EDGE ---------------- #\n        elif browser == &amp;quot;edge&amp;quot;:\n    \n            options = EdgeOptions()\n    \n            if headless:\n                options.add_argument(&amp;quot;--headless=new&amp;quot;)\n    \n            if grid_url:\n                driver = webdriver.Remote(\n                    command_executor=grid_url,\n                    options=options\n                )\n            else:\n                driver = webdriver.Edge(options=options)\n    \n        else:\n            raise ValueError(f&amp;quot;Browser not supported: {browser}&amp;quot;)\n    \n        driver.set_page_load_timeout(30)\n        driver.implicitly_wait(10)\n    \n&amp;gt;       driver.get(ReadConfig.get_url())\n\nconftest.py:107: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n.venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:357: in get\n    self.execute(Command.GET, {&amp;quot;url&amp;quot;: url})\n.venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:348: in execute\n    self.error_handler.check_response(response)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = &amp;lt;selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x108f03b10&amp;gt;\nresponse = {&amp;#x27;status&amp;#x27;: 500, &amp;#x27;value&amp;#x27;: &amp;#x27;{&amp;quot;value&amp;quot;:{&amp;quot;error&amp;quot;:&amp;quot;timeout&amp;quot;,&amp;quot;message&amp;quot;:&amp;quot;timeout: Timed out receiving message from renderer: 2...ff81a067e59 _pthread_start + 115\\\\n24  libsystem_pthread.dylib             0x00007ff81a063857 thread_start + 15\\\\n&amp;quot;}}&amp;#x27;}\n\n    def check_response(self, response: Dict[str, Any]) -&amp;gt; None:\n        &amp;quot;&amp;quot;&amp;quot;Checks that a JSON response from the WebDriver does not have an\n        error.\n    \n        :Args:\n         - response - The JSON response from the WebDriver server as a dictionary\n           object.\n    \n        :Raises: If the response contains an error message.\n        &amp;quot;&amp;quot;&amp;quot;\n        status = response.get(&amp;quot;status&amp;quot;, None)\n        if not status or status == ErrorCode.SUCCESS:\n            return\n        value = None\n        message = response.get(&amp;quot;message&amp;quot;, &amp;quot;&amp;quot;)\n        screen: str = response.get(&amp;quot;screen&amp;quot;, &amp;quot;&amp;quot;)\n        stacktrace = None\n        if isinstance(status, int):\n            value_json = response.get(&amp;quot;value&amp;quot;, None)\n            if value_json and isinstance(value_json, str):\n                import json\n    \n                try:\n                    value = json.loads(value_json)\n                    if len(value) == 1:\n                        value = value[&amp;quot;value&amp;quot;]\n                    status = value.get(&amp;quot;error&amp;quot;, None)\n                    if not status:\n                        status = value.get(&amp;quot;status&amp;quot;, ErrorCode.UNKNOWN_ERROR)\n                        message = value.get(&amp;quot;value&amp;quot;) or value.get(&amp;quot;message&amp;quot;)\n                        if not isinstance(message, str):\n                            value = message\n                            message = message.get(&amp;quot;message&amp;quot;)\n                    else:\n                        message = value.get(&amp;quot;message&amp;quot;, None)\n                except ValueError:\n                    pass\n    \n        exception_class: Type[WebDriverException]\n        e = ErrorCode()\n        error_codes = [item for item in dir(e) if not item.startswith(&amp;quot;__&amp;quot;)]\n        for error_code in error_codes:\n            error_info = getattr(ErrorCode, error_code)\n            if isinstance(error_info, list) and status in error_info:\n                exception_class = getattr(ExceptionMapping, error_code, WebDriverException)\n                break\n        else:\n            exception_class = WebDriverException\n    \n        if not value:\n            value = response[&amp;quot;value&amp;quot;]\n        if isinstance(value, str):\n            raise exception_class(value)\n        if message == &amp;quot;&amp;quot; and &amp;quot;message&amp;quot; in value:\n            message = value[&amp;quot;message&amp;quot;]\n    \n        screen = None  # type: ignore[assignment]\n        if &amp;quot;screen&amp;quot; in value:\n            screen = value[&amp;quot;screen&amp;quot;]\n    \n        stacktrace = None\n        st_value = value.get(&amp;quot;stackTrace&amp;quot;) or value.get(&amp;quot;stacktrace&amp;quot;)\n        if st_value:\n            if isinstance(st_value, str):\n                stacktrace = st_value.split(&amp;quot;\\n&amp;quot;)\n            else:\n                stacktrace = []\n                try:\n                    for frame in st_value:\n                        line = frame.get(&amp;quot;lineNumber&amp;quot;, &amp;quot;&amp;quot;)\n                        file = frame.get(&amp;quot;fileName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if line:\n                            file = f&amp;quot;{file}:{line}&amp;quot;\n                        meth = frame.get(&amp;quot;methodName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if &amp;quot;className&amp;quot; in frame:\n                            meth = f&amp;quot;{frame[&amp;#x27;className&amp;#x27;]}.{meth}&amp;quot;\n                        msg = &amp;quot;    at %s (%s)&amp;quot;\n                        msg = msg % (meth, file)\n                        stacktrace.append(msg)\n                except TypeError:\n                    pass\n        if exception_class == UnexpectedAlertPresentException:\n            alert_text = None\n            if &amp;quot;data&amp;quot; in value:\n                alert_text = value[&amp;quot;data&amp;quot;].get(&amp;quot;text&amp;quot;)\n            elif &amp;quot;alert&amp;quot; in value:\n                alert_text = value[&amp;quot;alert&amp;quot;].get(&amp;quot;text&amp;quot;)\n            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here\n&amp;gt;       raise exception_class(message, screen, stacktrace)\nE       selenium.common.exceptions.TimeoutException: Message: timeout: Timed out receiving message from renderer: 25.757\nE         (Session info: chrome=143.0.7499.170)\nE       Stacktrace:\nE       0   chromedriver                        0x000000010ff8b068 chromedriver + 6631528\nE       1   chromedriver                        0x000000010ff81d1a chromedriver + 6593818\nE       2   chromedriver                        0x000000010f9a2ccb chromedriver + 437451\nE       3   chromedriver                        0x000000010f98a96f chromedriver + 338287\nE       4   chromedriver                        0x000000010f98a69d chromedriver + 337565\nE       5   chromedriver                        0x000000010f9885a9 chromedriver + 329129\nE       6   chromedriver                        0x000000010f988e7f chromedriver + 331391\nE       7   chromedriver                        0x000000010f997860 chromedriver + 391264\nE       8   chromedriver                        0x000000010f9b1373 chromedriver + 496499\nE       9   chromedriver                        0x000000010f9b792b chromedriver + 522539\nE       10  chromedriver                        0x000000010f989561 chromedriver + 333153\nE       11  chromedriver                        0x000000010f9b10e5 chromedriver + 495845\nE       12  chromedriver                        0x000000010fa42684 chromedriver + 1091204\nE       13  chromedriver                        0x000000010f9e6fb7 chromedriver + 716727\nE       14  chromedriver                        0x000000010f9e7c81 chromedriver + 720001\nE       15  chromedriver                        0x000000010ff48011 chromedriver + 6357009\nE       16  chromedriver                        0x000000010ff4c460 chromedriver + 6374496\nE       17  chromedriver                        0x000000010ff23023 chromedriver + 6205475\nE       18  chromedriver                        0x000000010ff4ced5 chromedriver + 6377173\nE       19  chromedriver                        0x000000010ff11f01 chromedriver + 6135553\nE       20  chromedriver                        0x000000010ff6ea98 chromedriver + 6515352\nE       21  chromedriver                        0x000000010ff6ec53 chromedriver + 6515795\nE       22  chromedriver                        0x000000010ff8191c chromedriver + 6592796\nE       23  libsystem_pthread.dylib             0x00007ff81a067e59 _pthread_start + 115\nE       24  libsystem_pthread.dylib             0x00007ff81a063857 thread_start + 15\n\n.venv/lib/python3.13/site-packages/selenium/webdriver/remote/errorhandler.py:229: TimeoutException\n\n---------------------------- Captured stdout setup -----------------------------\n\n========== Execution Info ==========\nBrowser   : chrome\nHeadless  : False\nGRID_URL  : None\n====================================\n\n&#34;}], &#34;testCases/test_003_login_parameter.py::TestLoginParametrized::test_login_param[Admin-wrongpass-Invalid]&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;testCases/test_003_login_parameter.py::TestLoginParametrized::test_login_param[Admin-wrongpass-Invalid]&#34;, &#34;duration&#34;: &#34;00:00:32&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;testCases/test_003_login_parameter.py::TestLoginParametrized::test_login_param[Admin-wrongpass-Invalid]&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:32&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;---------------------------- Captured stdout setup -----------------------------\n\n========== Execution Info ==========\nBrowser   : chrome\nHeadless  : False\nGRID_URL  : None\n====================================\n\n\n------------------------------ Captured log call -------------------------------\nINFO     AutomationLogger:test_003_login_parameter.py:24 ====== Starting Parametrized Login Test ======\nINFO     AutomationLogger:test_003_login_parameter.py:25 Username: Admin\nINFO     AutomationLogger:test_003_login_parameter.py:26 Expected: Invalid\nINFO     AutomationLogger:test_003_login_parameter.py:56 Invalid Login Correct\n\n&#34;}], &#34;testCases/test_003_login_parameter.py::TestLoginParametrized::test_login_param[WrongUser-admin123-Invalid]&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Error&#34;, &#34;testId&#34;: &#34;testCases/test_003_login_parameter.py::TestLoginParametrized::test_login_param[WrongUser-admin123-Invalid]::setup&#34;, &#34;duration&#34;: &#34;00:00:32&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Error&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;testCases/test_003_login_parameter.py::TestLoginParametrized::test_login_param[WrongUser-admin123-Invalid]::setup&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:32&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;browser = &amp;#x27;chrome&amp;#x27;, headless = False\n\n    @pytest.fixture()\n    def setup(browser, headless):\n    \n        driver = None\n        grid_url = os.getenv(&amp;quot;GRID_URL&amp;quot;)  # If running via Selenium Grid\n        docker_env = os.getenv(&amp;quot;DOCKER&amp;quot;)  # Optional custom flag\n    \n        print(f&amp;quot;\\n========== Execution Info ==========&amp;quot;)\n        print(f&amp;quot;Browser   : {browser}&amp;quot;)\n        print(f&amp;quot;Headless  : {headless}&amp;quot;)\n        print(f&amp;quot;GRID_URL  : {grid_url}&amp;quot;)\n        print(f&amp;quot;====================================\\n&amp;quot;)\n    \n        # ---------------- CHROME ---------------- #\n        if browser == &amp;quot;chrome&amp;quot;:\n    \n            options = ChromeOptions()\n    \n            if headless:\n                options.add_argument(&amp;quot;--headless=new&amp;quot;)\n    \n            options.add_argument(&amp;quot;--no-sandbox&amp;quot;)\n            options.add_argument(&amp;quot;--disable-dev-shm-usage&amp;quot;)\n            options.add_argument(&amp;quot;--disable-gpu&amp;quot;)\n            options.add_argument(&amp;quot;--window-size=1920,1080&amp;quot;)\n    \n            # \ud83d\udd25 If running inside Docker container (chromium installed)\n            if os.path.exists(&amp;quot;/usr/bin/chromium&amp;quot;):\n                options.binary_location = &amp;quot;/usr/bin/chromium&amp;quot;\n    \n            if grid_url:\n                driver = webdriver.Remote(\n                    command_executor=grid_url,\n                    options=options\n                )\n            else:\n                driver = webdriver.Chrome(options=options)\n    \n        # ---------------- FIREFOX ---------------- #\n        elif browser == &amp;quot;firefox&amp;quot;:\n    \n            options = FirefoxOptions()\n    \n            if headless:\n                options.add_argument(&amp;quot;--headless&amp;quot;)\n    \n            if grid_url:\n                driver = webdriver.Remote(\n                    command_executor=grid_url,\n                    options=options\n                )\n            else:\n                driver = webdriver.Firefox(options=options)\n    \n        # ---------------- EDGE ---------------- #\n        elif browser == &amp;quot;edge&amp;quot;:\n    \n            options = EdgeOptions()\n    \n            if headless:\n                options.add_argument(&amp;quot;--headless=new&amp;quot;)\n    \n            if grid_url:\n                driver = webdriver.Remote(\n                    command_executor=grid_url,\n                    options=options\n                )\n            else:\n                driver = webdriver.Edge(options=options)\n    \n        else:\n            raise ValueError(f&amp;quot;Browser not supported: {browser}&amp;quot;)\n    \n        driver.set_page_load_timeout(30)\n        driver.implicitly_wait(10)\n    \n&amp;gt;       driver.get(ReadConfig.get_url())\n\nconftest.py:107: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n.venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:357: in get\n    self.execute(Command.GET, {&amp;quot;url&amp;quot;: url})\n.venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:348: in execute\n    self.error_handler.check_response(response)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = &amp;lt;selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x108f31480&amp;gt;\nresponse = {&amp;#x27;status&amp;#x27;: 500, &amp;#x27;value&amp;#x27;: &amp;#x27;{&amp;quot;value&amp;quot;:{&amp;quot;error&amp;quot;:&amp;quot;timeout&amp;quot;,&amp;quot;message&amp;quot;:&amp;quot;timeout: Timed out receiving message from renderer: 2...ff81a067e59 _pthread_start + 115\\\\n24  libsystem_pthread.dylib             0x00007ff81a063857 thread_start + 15\\\\n&amp;quot;}}&amp;#x27;}\n\n    def check_response(self, response: Dict[str, Any]) -&amp;gt; None:\n        &amp;quot;&amp;quot;&amp;quot;Checks that a JSON response from the WebDriver does not have an\n        error.\n    \n        :Args:\n         - response - The JSON response from the WebDriver server as a dictionary\n           object.\n    \n        :Raises: If the response contains an error message.\n        &amp;quot;&amp;quot;&amp;quot;\n        status = response.get(&amp;quot;status&amp;quot;, None)\n        if not status or status == ErrorCode.SUCCESS:\n            return\n        value = None\n        message = response.get(&amp;quot;message&amp;quot;, &amp;quot;&amp;quot;)\n        screen: str = response.get(&amp;quot;screen&amp;quot;, &amp;quot;&amp;quot;)\n        stacktrace = None\n        if isinstance(status, int):\n            value_json = response.get(&amp;quot;value&amp;quot;, None)\n            if value_json and isinstance(value_json, str):\n                import json\n    \n                try:\n                    value = json.loads(value_json)\n                    if len(value) == 1:\n                        value = value[&amp;quot;value&amp;quot;]\n                    status = value.get(&amp;quot;error&amp;quot;, None)\n                    if not status:\n                        status = value.get(&amp;quot;status&amp;quot;, ErrorCode.UNKNOWN_ERROR)\n                        message = value.get(&amp;quot;value&amp;quot;) or value.get(&amp;quot;message&amp;quot;)\n                        if not isinstance(message, str):\n                            value = message\n                            message = message.get(&amp;quot;message&amp;quot;)\n                    else:\n                        message = value.get(&amp;quot;message&amp;quot;, None)\n                except ValueError:\n                    pass\n    \n        exception_class: Type[WebDriverException]\n        e = ErrorCode()\n        error_codes = [item for item in dir(e) if not item.startswith(&amp;quot;__&amp;quot;)]\n        for error_code in error_codes:\n            error_info = getattr(ErrorCode, error_code)\n            if isinstance(error_info, list) and status in error_info:\n                exception_class = getattr(ExceptionMapping, error_code, WebDriverException)\n                break\n        else:\n            exception_class = WebDriverException\n    \n        if not value:\n            value = response[&amp;quot;value&amp;quot;]\n        if isinstance(value, str):\n            raise exception_class(value)\n        if message == &amp;quot;&amp;quot; and &amp;quot;message&amp;quot; in value:\n            message = value[&amp;quot;message&amp;quot;]\n    \n        screen = None  # type: ignore[assignment]\n        if &amp;quot;screen&amp;quot; in value:\n            screen = value[&amp;quot;screen&amp;quot;]\n    \n        stacktrace = None\n        st_value = value.get(&amp;quot;stackTrace&amp;quot;) or value.get(&amp;quot;stacktrace&amp;quot;)\n        if st_value:\n            if isinstance(st_value, str):\n                stacktrace = st_value.split(&amp;quot;\\n&amp;quot;)\n            else:\n                stacktrace = []\n                try:\n                    for frame in st_value:\n                        line = frame.get(&amp;quot;lineNumber&amp;quot;, &amp;quot;&amp;quot;)\n                        file = frame.get(&amp;quot;fileName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if line:\n                            file = f&amp;quot;{file}:{line}&amp;quot;\n                        meth = frame.get(&amp;quot;methodName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if &amp;quot;className&amp;quot; in frame:\n                            meth = f&amp;quot;{frame[&amp;#x27;className&amp;#x27;]}.{meth}&amp;quot;\n                        msg = &amp;quot;    at %s (%s)&amp;quot;\n                        msg = msg % (meth, file)\n                        stacktrace.append(msg)\n                except TypeError:\n                    pass\n        if exception_class == UnexpectedAlertPresentException:\n            alert_text = None\n            if &amp;quot;data&amp;quot; in value:\n                alert_text = value[&amp;quot;data&amp;quot;].get(&amp;quot;text&amp;quot;)\n            elif &amp;quot;alert&amp;quot; in value:\n                alert_text = value[&amp;quot;alert&amp;quot;].get(&amp;quot;text&amp;quot;)\n            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here\n&amp;gt;       raise exception_class(message, screen, stacktrace)\nE       selenium.common.exceptions.TimeoutException: Message: timeout: Timed out receiving message from renderer: 26.490\nE         (Session info: chrome=143.0.7499.170)\nE       Stacktrace:\nE       0   chromedriver                        0x000000010ffb2068 chromedriver + 6631528\nE       1   chromedriver                        0x000000010ffa8d1a chromedriver + 6593818\nE       2   chromedriver                        0x000000010f9c9ccb chromedriver + 437451\nE       3   chromedriver                        0x000000010f9b196f chromedriver + 338287\nE       4   chromedriver                        0x000000010f9b169d chromedriver + 337565\nE       5   chromedriver                        0x000000010f9af5a9 chromedriver + 329129\nE       6   chromedriver                        0x000000010f9afe7f chromedriver + 331391\nE       7   chromedriver                        0x000000010f9be860 chromedriver + 391264\nE       8   chromedriver                        0x000000010f9d8373 chromedriver + 496499\nE       9   chromedriver                        0x000000010f9de92b chromedriver + 522539\nE       10  chromedriver                        0x000000010f9b0561 chromedriver + 333153\nE       11  chromedriver                        0x000000010f9d80e5 chromedriver + 495845\nE       12  chromedriver                        0x000000010fa69684 chromedriver + 1091204\nE       13  chromedriver                        0x000000010fa0dfb7 chromedriver + 716727\nE       14  chromedriver                        0x000000010fa0ec81 chromedriver + 720001\nE       15  chromedriver                        0x000000010ff6f011 chromedriver + 6357009\nE       16  chromedriver                        0x000000010ff73460 chromedriver + 6374496\nE       17  chromedriver                        0x000000010ff4a023 chromedriver + 6205475\nE       18  chromedriver                        0x000000010ff73ed5 chromedriver + 6377173\nE       19  chromedriver                        0x000000010ff38f01 chromedriver + 6135553\nE       20  chromedriver                        0x000000010ff95a98 chromedriver + 6515352\nE       21  chromedriver                        0x000000010ff95c53 chromedriver + 6515795\nE       22  chromedriver                        0x000000010ffa891c chromedriver + 6592796\nE       23  libsystem_pthread.dylib             0x00007ff81a067e59 _pthread_start + 115\nE       24  libsystem_pthread.dylib             0x00007ff81a063857 thread_start + 15\n\n.venv/lib/python3.13/site-packages/selenium/webdriver/remote/errorhandler.py:229: TimeoutException\n\n---------------------------- Captured stdout setup -----------------------------\n\n========== Execution Info ==========\nBrowser   : chrome\nHeadless  : False\nGRID_URL  : None\n====================================\n\n&#34;}], &#34;testCases/test_003_login_parameter.py::TestLoginParametrized::test_login_param[WrongUser-wrongpass-Invalid]&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Error&#34;, &#34;testId&#34;: &#34;testCases/test_003_login_parameter.py::TestLoginParametrized::test_login_param[WrongUser-wrongpass-Invalid]::setup&#34;, &#34;duration&#34;: &#34;00:00:32&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Error&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;testCases/test_003_login_parameter.py::TestLoginParametrized::test_login_param[WrongUser-wrongpass-Invalid]::setup&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:32&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;browser = &amp;#x27;chrome&amp;#x27;, headless = False\n\n    @pytest.fixture()\n    def setup(browser, headless):\n    \n        driver = None\n        grid_url = os.getenv(&amp;quot;GRID_URL&amp;quot;)  # If running via Selenium Grid\n        docker_env = os.getenv(&amp;quot;DOCKER&amp;quot;)  # Optional custom flag\n    \n        print(f&amp;quot;\\n========== Execution Info ==========&amp;quot;)\n        print(f&amp;quot;Browser   : {browser}&amp;quot;)\n        print(f&amp;quot;Headless  : {headless}&amp;quot;)\n        print(f&amp;quot;GRID_URL  : {grid_url}&amp;quot;)\n        print(f&amp;quot;====================================\\n&amp;quot;)\n    \n        # ---------------- CHROME ---------------- #\n        if browser == &amp;quot;chrome&amp;quot;:\n    \n            options = ChromeOptions()\n    \n            if headless:\n                options.add_argument(&amp;quot;--headless=new&amp;quot;)\n    \n            options.add_argument(&amp;quot;--no-sandbox&amp;quot;)\n            options.add_argument(&amp;quot;--disable-dev-shm-usage&amp;quot;)\n            options.add_argument(&amp;quot;--disable-gpu&amp;quot;)\n            options.add_argument(&amp;quot;--window-size=1920,1080&amp;quot;)\n    \n            # \ud83d\udd25 If running inside Docker container (chromium installed)\n            if os.path.exists(&amp;quot;/usr/bin/chromium&amp;quot;):\n                options.binary_location = &amp;quot;/usr/bin/chromium&amp;quot;\n    \n            if grid_url:\n                driver = webdriver.Remote(\n                    command_executor=grid_url,\n                    options=options\n                )\n            else:\n                driver = webdriver.Chrome(options=options)\n    \n        # ---------------- FIREFOX ---------------- #\n        elif browser == &amp;quot;firefox&amp;quot;:\n    \n            options = FirefoxOptions()\n    \n            if headless:\n                options.add_argument(&amp;quot;--headless&amp;quot;)\n    \n            if grid_url:\n                driver = webdriver.Remote(\n                    command_executor=grid_url,\n                    options=options\n                )\n            else:\n                driver = webdriver.Firefox(options=options)\n    \n        # ---------------- EDGE ---------------- #\n        elif browser == &amp;quot;edge&amp;quot;:\n    \n            options = EdgeOptions()\n    \n            if headless:\n                options.add_argument(&amp;quot;--headless=new&amp;quot;)\n    \n            if grid_url:\n                driver = webdriver.Remote(\n                    command_executor=grid_url,\n                    options=options\n                )\n            else:\n                driver = webdriver.Edge(options=options)\n    \n        else:\n            raise ValueError(f&amp;quot;Browser not supported: {browser}&amp;quot;)\n    \n        driver.set_page_load_timeout(30)\n        driver.implicitly_wait(10)\n    \n&amp;gt;       driver.get(ReadConfig.get_url())\n\nconftest.py:107: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n.venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:357: in get\n    self.execute(Command.GET, {&amp;quot;url&amp;quot;: url})\n.venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:348: in execute\n    self.error_handler.check_response(response)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = &amp;lt;selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x108f2eb10&amp;gt;\nresponse = {&amp;#x27;status&amp;#x27;: 500, &amp;#x27;value&amp;#x27;: &amp;#x27;{&amp;quot;value&amp;quot;:{&amp;quot;error&amp;quot;:&amp;quot;timeout&amp;quot;,&amp;quot;message&amp;quot;:&amp;quot;timeout: Timed out receiving message from renderer: 2...ff81a067e59 _pthread_start + 115\\\\n24  libsystem_pthread.dylib             0x00007ff81a063857 thread_start + 15\\\\n&amp;quot;}}&amp;#x27;}\n\n    def check_response(self, response: Dict[str, Any]) -&amp;gt; None:\n        &amp;quot;&amp;quot;&amp;quot;Checks that a JSON response from the WebDriver does not have an\n        error.\n    \n        :Args:\n         - response - The JSON response from the WebDriver server as a dictionary\n           object.\n    \n        :Raises: If the response contains an error message.\n        &amp;quot;&amp;quot;&amp;quot;\n        status = response.get(&amp;quot;status&amp;quot;, None)\n        if not status or status == ErrorCode.SUCCESS:\n            return\n        value = None\n        message = response.get(&amp;quot;message&amp;quot;, &amp;quot;&amp;quot;)\n        screen: str = response.get(&amp;quot;screen&amp;quot;, &amp;quot;&amp;quot;)\n        stacktrace = None\n        if isinstance(status, int):\n            value_json = response.get(&amp;quot;value&amp;quot;, None)\n            if value_json and isinstance(value_json, str):\n                import json\n    \n                try:\n                    value = json.loads(value_json)\n                    if len(value) == 1:\n                        value = value[&amp;quot;value&amp;quot;]\n                    status = value.get(&amp;quot;error&amp;quot;, None)\n                    if not status:\n                        status = value.get(&amp;quot;status&amp;quot;, ErrorCode.UNKNOWN_ERROR)\n                        message = value.get(&amp;quot;value&amp;quot;) or value.get(&amp;quot;message&amp;quot;)\n                        if not isinstance(message, str):\n                            value = message\n                            message = message.get(&amp;quot;message&amp;quot;)\n                    else:\n                        message = value.get(&amp;quot;message&amp;quot;, None)\n                except ValueError:\n                    pass\n    \n        exception_class: Type[WebDriverException]\n        e = ErrorCode()\n        error_codes = [item for item in dir(e) if not item.startswith(&amp;quot;__&amp;quot;)]\n        for error_code in error_codes:\n            error_info = getattr(ErrorCode, error_code)\n            if isinstance(error_info, list) and status in error_info:\n                exception_class = getattr(ExceptionMapping, error_code, WebDriverException)\n                break\n        else:\n            exception_class = WebDriverException\n    \n        if not value:\n            value = response[&amp;quot;value&amp;quot;]\n        if isinstance(value, str):\n            raise exception_class(value)\n        if message == &amp;quot;&amp;quot; and &amp;quot;message&amp;quot; in value:\n            message = value[&amp;quot;message&amp;quot;]\n    \n        screen = None  # type: ignore[assignment]\n        if &amp;quot;screen&amp;quot; in value:\n            screen = value[&amp;quot;screen&amp;quot;]\n    \n        stacktrace = None\n        st_value = value.get(&amp;quot;stackTrace&amp;quot;) or value.get(&amp;quot;stacktrace&amp;quot;)\n        if st_value:\n            if isinstance(st_value, str):\n                stacktrace = st_value.split(&amp;quot;\\n&amp;quot;)\n            else:\n                stacktrace = []\n                try:\n                    for frame in st_value:\n                        line = frame.get(&amp;quot;lineNumber&amp;quot;, &amp;quot;&amp;quot;)\n                        file = frame.get(&amp;quot;fileName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if line:\n                            file = f&amp;quot;{file}:{line}&amp;quot;\n                        meth = frame.get(&amp;quot;methodName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if &amp;quot;className&amp;quot; in frame:\n                            meth = f&amp;quot;{frame[&amp;#x27;className&amp;#x27;]}.{meth}&amp;quot;\n                        msg = &amp;quot;    at %s (%s)&amp;quot;\n                        msg = msg % (meth, file)\n                        stacktrace.append(msg)\n                except TypeError:\n                    pass\n        if exception_class == UnexpectedAlertPresentException:\n            alert_text = None\n            if &amp;quot;data&amp;quot; in value:\n                alert_text = value[&amp;quot;data&amp;quot;].get(&amp;quot;text&amp;quot;)\n            elif &amp;quot;alert&amp;quot; in value:\n                alert_text = value[&amp;quot;alert&amp;quot;].get(&amp;quot;text&amp;quot;)\n            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here\n&amp;gt;       raise exception_class(message, screen, stacktrace)\nE       selenium.common.exceptions.TimeoutException: Message: timeout: Timed out receiving message from renderer: 27.288\nE         (Session info: chrome=143.0.7499.170)\nE       Stacktrace:\nE       0   chromedriver                        0x000000010f916068 chromedriver + 6631528\nE       1   chromedriver                        0x000000010f90cd1a chromedriver + 6593818\nE       2   chromedriver                        0x000000010f32dccb chromedriver + 437451\nE       3   chromedriver                        0x000000010f31596f chromedriver + 338287\nE       4   chromedriver                        0x000000010f31569d chromedriver + 337565\nE       5   chromedriver                        0x000000010f3135a9 chromedriver + 329129\nE       6   chromedriver                        0x000000010f313e7f chromedriver + 331391\nE       7   chromedriver                        0x000000010f322860 chromedriver + 391264\nE       8   chromedriver                        0x000000010f33c373 chromedriver + 496499\nE       9   chromedriver                        0x000000010f34292b chromedriver + 522539\nE       10  chromedriver                        0x000000010f314561 chromedriver + 333153\nE       11  chromedriver                        0x000000010f33c0e5 chromedriver + 495845\nE       12  chromedriver                        0x000000010f3cd684 chromedriver + 1091204\nE       13  chromedriver                        0x000000010f371fb7 chromedriver + 716727\nE       14  chromedriver                        0x000000010f372c81 chromedriver + 720001\nE       15  chromedriver                        0x000000010f8d3011 chromedriver + 6357009\nE       16  chromedriver                        0x000000010f8d7460 chromedriver + 6374496\nE       17  chromedriver                        0x000000010f8ae023 chromedriver + 6205475\nE       18  chromedriver                        0x000000010f8d7ed5 chromedriver + 6377173\nE       19  chromedriver                        0x000000010f89cf01 chromedriver + 6135553\nE       20  chromedriver                        0x000000010f8f9a98 chromedriver + 6515352\nE       21  chromedriver                        0x000000010f8f9c53 chromedriver + 6515795\nE       22  chromedriver                        0x000000010f90c91c chromedriver + 6592796\nE       23  libsystem_pthread.dylib             0x00007ff81a067e59 _pthread_start + 115\nE       24  libsystem_pthread.dylib             0x00007ff81a063857 thread_start + 15\n\n.venv/lib/python3.13/site-packages/selenium/webdriver/remote/errorhandler.py:229: TimeoutException\n\n---------------------------- Captured stdout setup -----------------------------\n\n========== Execution Info ==========\nBrowser   : chrome\nHeadless  : False\nGRID_URL  : None\n====================================\n\n&#34;}], &#34;testCases/test_004_invalid_login.py::TestInvalidLogin::test_invalid_login&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Error&#34;, &#34;testId&#34;: &#34;testCases/test_004_invalid_login.py::TestInvalidLogin::test_invalid_login::setup&#34;, &#34;duration&#34;: &#34;00:00:32&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Error&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;testCases/test_004_invalid_login.py::TestInvalidLogin::test_invalid_login::setup&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:32&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;browser = &amp;#x27;chrome&amp;#x27;, headless = False\n\n    @pytest.fixture()\n    def setup(browser, headless):\n    \n        driver = None\n        grid_url = os.getenv(&amp;quot;GRID_URL&amp;quot;)  # If running via Selenium Grid\n        docker_env = os.getenv(&amp;quot;DOCKER&amp;quot;)  # Optional custom flag\n    \n        print(f&amp;quot;\\n========== Execution Info ==========&amp;quot;)\n        print(f&amp;quot;Browser   : {browser}&amp;quot;)\n        print(f&amp;quot;Headless  : {headless}&amp;quot;)\n        print(f&amp;quot;GRID_URL  : {grid_url}&amp;quot;)\n        print(f&amp;quot;====================================\\n&amp;quot;)\n    \n        # ---------------- CHROME ---------------- #\n        if browser == &amp;quot;chrome&amp;quot;:\n    \n            options = ChromeOptions()\n    \n            if headless:\n                options.add_argument(&amp;quot;--headless=new&amp;quot;)\n    \n            options.add_argument(&amp;quot;--no-sandbox&amp;quot;)\n            options.add_argument(&amp;quot;--disable-dev-shm-usage&amp;quot;)\n            options.add_argument(&amp;quot;--disable-gpu&amp;quot;)\n            options.add_argument(&amp;quot;--window-size=1920,1080&amp;quot;)\n    \n            # \ud83d\udd25 If running inside Docker container (chromium installed)\n            if os.path.exists(&amp;quot;/usr/bin/chromium&amp;quot;):\n                options.binary_location = &amp;quot;/usr/bin/chromium&amp;quot;\n    \n            if grid_url:\n                driver = webdriver.Remote(\n                    command_executor=grid_url,\n                    options=options\n                )\n            else:\n                driver = webdriver.Chrome(options=options)\n    \n        # ---------------- FIREFOX ---------------- #\n        elif browser == &amp;quot;firefox&amp;quot;:\n    \n            options = FirefoxOptions()\n    \n            if headless:\n                options.add_argument(&amp;quot;--headless&amp;quot;)\n    \n            if grid_url:\n                driver = webdriver.Remote(\n                    command_executor=grid_url,\n                    options=options\n                )\n            else:\n                driver = webdriver.Firefox(options=options)\n    \n        # ---------------- EDGE ---------------- #\n        elif browser == &amp;quot;edge&amp;quot;:\n    \n            options = EdgeOptions()\n    \n            if headless:\n                options.add_argument(&amp;quot;--headless=new&amp;quot;)\n    \n            if grid_url:\n                driver = webdriver.Remote(\n                    command_executor=grid_url,\n                    options=options\n                )\n            else:\n                driver = webdriver.Edge(options=options)\n    \n        else:\n            raise ValueError(f&amp;quot;Browser not supported: {browser}&amp;quot;)\n    \n        driver.set_page_load_timeout(30)\n        driver.implicitly_wait(10)\n    \n&amp;gt;       driver.get(ReadConfig.get_url())\n\nconftest.py:107: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n.venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:357: in get\n    self.execute(Command.GET, {&amp;quot;url&amp;quot;: url})\n.venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:348: in execute\n    self.error_handler.check_response(response)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = &amp;lt;selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x108f8fac0&amp;gt;\nresponse = {&amp;#x27;status&amp;#x27;: 500, &amp;#x27;value&amp;#x27;: &amp;#x27;{&amp;quot;value&amp;quot;:{&amp;quot;error&amp;quot;:&amp;quot;timeout&amp;quot;,&amp;quot;message&amp;quot;:&amp;quot;timeout: Timed out receiving message from renderer: 2...ff81a067e59 _pthread_start + 115\\\\n24  libsystem_pthread.dylib             0x00007ff81a063857 thread_start + 15\\\\n&amp;quot;}}&amp;#x27;}\n\n    def check_response(self, response: Dict[str, Any]) -&amp;gt; None:\n        &amp;quot;&amp;quot;&amp;quot;Checks that a JSON response from the WebDriver does not have an\n        error.\n    \n        :Args:\n         - response - The JSON response from the WebDriver server as a dictionary\n           object.\n    \n        :Raises: If the response contains an error message.\n        &amp;quot;&amp;quot;&amp;quot;\n        status = response.get(&amp;quot;status&amp;quot;, None)\n        if not status or status == ErrorCode.SUCCESS:\n            return\n        value = None\n        message = response.get(&amp;quot;message&amp;quot;, &amp;quot;&amp;quot;)\n        screen: str = response.get(&amp;quot;screen&amp;quot;, &amp;quot;&amp;quot;)\n        stacktrace = None\n        if isinstance(status, int):\n            value_json = response.get(&amp;quot;value&amp;quot;, None)\n            if value_json and isinstance(value_json, str):\n                import json\n    \n                try:\n                    value = json.loads(value_json)\n                    if len(value) == 1:\n                        value = value[&amp;quot;value&amp;quot;]\n                    status = value.get(&amp;quot;error&amp;quot;, None)\n                    if not status:\n                        status = value.get(&amp;quot;status&amp;quot;, ErrorCode.UNKNOWN_ERROR)\n                        message = value.get(&amp;quot;value&amp;quot;) or value.get(&amp;quot;message&amp;quot;)\n                        if not isinstance(message, str):\n                            value = message\n                            message = message.get(&amp;quot;message&amp;quot;)\n                    else:\n                        message = value.get(&amp;quot;message&amp;quot;, None)\n                except ValueError:\n                    pass\n    \n        exception_class: Type[WebDriverException]\n        e = ErrorCode()\n        error_codes = [item for item in dir(e) if not item.startswith(&amp;quot;__&amp;quot;)]\n        for error_code in error_codes:\n            error_info = getattr(ErrorCode, error_code)\n            if isinstance(error_info, list) and status in error_info:\n                exception_class = getattr(ExceptionMapping, error_code, WebDriverException)\n                break\n        else:\n            exception_class = WebDriverException\n    \n        if not value:\n            value = response[&amp;quot;value&amp;quot;]\n        if isinstance(value, str):\n            raise exception_class(value)\n        if message == &amp;quot;&amp;quot; and &amp;quot;message&amp;quot; in value:\n            message = value[&amp;quot;message&amp;quot;]\n    \n        screen = None  # type: ignore[assignment]\n        if &amp;quot;screen&amp;quot; in value:\n            screen = value[&amp;quot;screen&amp;quot;]\n    \n        stacktrace = None\n        st_value = value.get(&amp;quot;stackTrace&amp;quot;) or value.get(&amp;quot;stacktrace&amp;quot;)\n        if st_value:\n            if isinstance(st_value, str):\n                stacktrace = st_value.split(&amp;quot;\\n&amp;quot;)\n            else:\n                stacktrace = []\n                try:\n                    for frame in st_value:\n                        line = frame.get(&amp;quot;lineNumber&amp;quot;, &amp;quot;&amp;quot;)\n                        file = frame.get(&amp;quot;fileName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if line:\n                            file = f&amp;quot;{file}:{line}&amp;quot;\n                        meth = frame.get(&amp;quot;methodName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if &amp;quot;className&amp;quot; in frame:\n                            meth = f&amp;quot;{frame[&amp;#x27;className&amp;#x27;]}.{meth}&amp;quot;\n                        msg = &amp;quot;    at %s (%s)&amp;quot;\n                        msg = msg % (meth, file)\n                        stacktrace.append(msg)\n                except TypeError:\n                    pass\n        if exception_class == UnexpectedAlertPresentException:\n            alert_text = None\n            if &amp;quot;data&amp;quot; in value:\n                alert_text = value[&amp;quot;data&amp;quot;].get(&amp;quot;text&amp;quot;)\n            elif &amp;quot;alert&amp;quot; in value:\n                alert_text = value[&amp;quot;alert&amp;quot;].get(&amp;quot;text&amp;quot;)\n            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here\n&amp;gt;       raise exception_class(message, screen, stacktrace)\nE       selenium.common.exceptions.TimeoutException: Message: timeout: Timed out receiving message from renderer: 24.677\nE         (Session info: chrome=143.0.7499.170)\nE       Stacktrace:\nE       0   chromedriver                        0x00000001081e8068 chromedriver + 6631528\nE       1   chromedriver                        0x00000001081ded1a chromedriver + 6593818\nE       2   chromedriver                        0x0000000107bffccb chromedriver + 437451\nE       3   chromedriver                        0x0000000107be796f chromedriver + 338287\nE       4   chromedriver                        0x0000000107be769d chromedriver + 337565\nE       5   chromedriver                        0x0000000107be55a9 chromedriver + 329129\nE       6   chromedriver                        0x0000000107be5e7f chromedriver + 331391\nE       7   chromedriver                        0x0000000107bf4860 chromedriver + 391264\nE       8   chromedriver                        0x0000000107c0e373 chromedriver + 496499\nE       9   chromedriver                        0x0000000107c1492b chromedriver + 522539\nE       10  chromedriver                        0x0000000107be6561 chromedriver + 333153\nE       11  chromedriver                        0x0000000107c0e0e5 chromedriver + 495845\nE       12  chromedriver                        0x0000000107c9f684 chromedriver + 1091204\nE       13  chromedriver                        0x0000000107c43fb7 chromedriver + 716727\nE       14  chromedriver                        0x0000000107c44c81 chromedriver + 720001\nE       15  chromedriver                        0x00000001081a5011 chromedriver + 6357009\nE       16  chromedriver                        0x00000001081a9460 chromedriver + 6374496\nE       17  chromedriver                        0x0000000108180023 chromedriver + 6205475\nE       18  chromedriver                        0x00000001081a9ed5 chromedriver + 6377173\nE       19  chromedriver                        0x000000010816ef01 chromedriver + 6135553\nE       20  chromedriver                        0x00000001081cba98 chromedriver + 6515352\nE       21  chromedriver                        0x00000001081cbc53 chromedriver + 6515795\nE       22  chromedriver                        0x00000001081de91c chromedriver + 6592796\nE       23  libsystem_pthread.dylib             0x00007ff81a067e59 _pthread_start + 115\nE       24  libsystem_pthread.dylib             0x00007ff81a063857 thread_start + 15\n\n.venv/lib/python3.13/site-packages/selenium/webdriver/remote/errorhandler.py:229: TimeoutException\n\n---------------------------- Captured stdout setup -----------------------------\n\n========== Execution Info ==========\nBrowser   : chrome\nHeadless  : False\nGRID_URL  : None\n====================================\n\n&#34;}], &#34;testCases/test_005_logout.py::TestLogout::test_logout&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;testCases/test_005_logout.py::TestLogout::test_logout&#34;, &#34;duration&#34;: &#34;00:00:54&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;testCases/test_005_logout.py::TestLogout::test_logout&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:54&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;self = &amp;lt;testCases.test_005_logout.TestLogout object at 0x108d7b610&amp;gt;, setup = &amp;lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&amp;quot;212bb66783c640e274dd1f844d5d206c&amp;quot;)&amp;gt;\n\n    @pytest.mark.sanity\n    @pytest.mark.regression\n    def test_logout(self, setup):\n    \n        driver = setup\n        login = LoginPage(driver)\n        dashboard = DashboardPage(driver)\n    \n        login.enter_username(&amp;quot;Admin&amp;quot;)\n        login.enter_password(&amp;quot;admin123&amp;quot;)\n        login.click_login()\n    \n    \n        dashboard.wait_for_dashboard_menu()\n&amp;gt;       dashboard.click_logout()\n\ntestCases/test_005_logout.py:22: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \npages/dashboard_page.py:19: in click_logout\n    self.wait.until(EC.element_to_be_clickable(self.LOGOUT_BTN)).click()\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = &amp;lt;selenium.webdriver.support.wait.WebDriverWait (session=&amp;quot;212bb66783c640e274dd1f844d5d206c&amp;quot;)&amp;gt;\nmethod = &amp;lt;function element_to_be_clickable.&amp;lt;locals&amp;gt;._predicate at 0x108eeaac0&amp;gt;, message = &amp;#x27;&amp;#x27;\n\n    def until(self, method: Callable[[D], Union[Literal[False], T]], message: str = &amp;quot;&amp;quot;) -&amp;gt; T:\n        &amp;quot;&amp;quot;&amp;quot;Calls the method provided with the driver as an argument until the \\\n        return value does not evaluate to ``False``.\n    \n        :param method: callable(WebDriver)\n        :param message: optional message for :exc:`TimeoutException`\n        :returns: the result of the last call to `method`\n        :raises: :exc:`selenium.common.exceptions.TimeoutException` if timeout occurs\n        &amp;quot;&amp;quot;&amp;quot;\n        screen = None\n        stacktrace = None\n    \n        end_time = time.monotonic() + self._timeout\n        while True:\n            try:\n                value = method(self._driver)\n                if value:\n                    return value\n            except self._ignored_exceptions as exc:\n                screen = getattr(exc, &amp;quot;screen&amp;quot;, None)\n                stacktrace = getattr(exc, &amp;quot;stacktrace&amp;quot;, None)\n            time.sleep(self._poll)\n            if time.monotonic() &amp;gt; end_time:\n                break\n&amp;gt;       raise TimeoutException(message, screen, stacktrace)\nE       selenium.common.exceptions.TimeoutException: Message:\n\n.venv/lib/python3.13/site-packages/selenium/webdriver/support/wait.py:105: TimeoutException\n\n---------------------------- Captured stdout setup -----------------------------\n\n========== Execution Info ==========\nBrowser   : chrome\nHeadless  : False\nGRID_URL  : None\n====================================\n\n&#34;}], &#34;testCases/test_006_dashboard_visible_check.py::TestDashboard::test_dashboard_loaded&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;testCases/test_006_dashboard_visible_check.py::TestDashboard::test_dashboard_loaded&#34;, &#34;duration&#34;: &#34;00:00:28&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;testCases/test_006_dashboard_visible_check.py::TestDashboard::test_dashboard_loaded&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:28&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;---------------------------- Captured stdout setup -----------------------------\n\n========== Execution Info ==========\nBrowser   : chrome\nHeadless  : False\nGRID_URL  : None\n====================================\n\n&#34;}], &#34;testCases/test_007_login_page_title_verification.py::TestLoginPageUI::test_login_page_title&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Passed&#34;, &#34;testId&#34;: &#34;testCases/test_007_login_page_title_verification.py::TestLoginPageUI::test_login_page_title&#34;, &#34;duration&#34;: &#34;00:00:29&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Passed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;testCases/test_007_login_page_title_verification.py::TestLoginPageUI::test_login_page_title&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:29&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;---------------------------- Captured stdout setup -----------------------------\n\n========== Execution Info ==========\nBrowser   : chrome\nHeadless  : False\nGRID_URL  : None\n====================================\n\n&#34;}], &#34;testCases/test_008_empty_credentials_validations.py::TestEmptyLogin::test_empty_login&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Failed&#34;, &#34;testId&#34;: &#34;testCases/test_008_empty_credentials_validations.py::TestEmptyLogin::test_empty_login&#34;, &#34;duration&#34;: &#34;00:00:31&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Failed&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;testCases/test_008_empty_credentials_validations.py::TestEmptyLogin::test_empty_login&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:31&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;self = &amp;lt;testCases.test_008_empty_credentials_validations.TestEmptyLogin object at 0x108d7b9d0&amp;gt;\nsetup = &amp;lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&amp;quot;09b6002e12d9d991c300785c5344c56f&amp;quot;)&amp;gt;\n\n    @pytest.mark.regression\n    @pytest.mark.sanity\n    def test_empty_login(self, setup):\n    \n        driver = setup\n        login = LoginPage(driver)\n    \n        login.click_login()\n    \n&amp;gt;       assert &amp;quot;Required&amp;quot; in driver.page_source\nE       assert &amp;#x27;Required&amp;#x27; in &amp;#x27;&amp;lt;html&amp;gt;&amp;lt;head&amp;gt;\\n  &amp;lt;meta charset=&amp;quot;UTF-8&amp;quot;&amp;gt;\\n  &amp;lt;meta http-equiv=&amp;quot;X-UA-Compatible&amp;quot; content=&amp;quot;IE=edge&amp;quot;&amp;gt;\\n  &amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device-width,initial-scale=1&amp;quot;&amp;gt;\\n  &amp;lt;title&amp;gt;OrangeHRM&amp;lt;/title&amp;gt;\\n      &amp;lt;link rel=&amp;quot;icon&amp;quot; href=&amp;quot;/web/dist/favicon.ico?v=1763650546848&amp;quot;&amp;gt;\\n    &amp;lt;link href=&amp;quot;/web/dist/css/chunk-vendors.css?v=1763650546848&amp;quot; rel=&amp;quot;preload&amp;quot; as=&amp;quot;style&amp;quot;&amp;gt;\\n    &amp;lt;link href=&amp;quot;/web/dist/css/app.css?v=1763650546848&amp;quot; rel=&amp;quot;preload&amp;quot; as=&amp;quot;style&amp;quot;&amp;gt;\\n    &amp;lt;link href=&amp;quot;/web/dist/js/chunk-vendors.js?v=1763650546848&amp;quot; rel=&amp;quot;preload&amp;quot; as=&amp;quot;script&amp;quot;&amp;gt;\\n    &amp;lt;link href=&amp;quot;/web/dist/js/app.js?v=1763650546848&amp;quot; rel=&amp;quot;preload&amp;quot; as=&amp;quot;script&amp;quot;&amp;gt;\\n      &amp;lt;link href=&amp;quot;/web/dist/css/chunk-vendors.css?v=1763650546848&amp;quot; rel=&amp;quot;stylesheet&amp;quot;&amp;gt;\\n    &amp;lt;link href=&amp;quot;/web/dist/css/app.css?v=1763650546848&amp;quot; rel=&amp;quot;stylesheet&amp;quot;&amp;gt;\\n&amp;lt;/head&amp;gt;\\n&amp;lt;body&amp;gt;\\n  &amp;lt;style&amp;gt;\\n    :root {\\n            --oxd-primary-one-color:#FF7B1D;\\n            --oxd-primary-font-color:#FFFFFF;\\n            --oxd-secondary-four-color:#76BC21;\\n            --oxd-secondary-font-color:#FFFFFF;\\n            --oxd-primary-gradient-start-color:#FF920B;\\n            --oxd-primary-gradient-end-color:#F35C17;\\n            --oxd-secondary-gradient-start-color:#FF920B;\\n            --oxd-seco....081 359.395 C 250.081 359.395 347.794 359.395 372.14 352.859 C 385.62 349.265 396.16 338.644 399.754 325.245 C 406.29 300.899 406.29 250 406.29 250 C 406.29 250 406.29 199.183 399.754 174.755 Z M 218.709 296.895 L 218.709 203.105 L 299.918 250 L 218.709 296.895 Z&amp;quot;&amp;gt;&amp;lt;/path&amp;gt;&amp;lt;/g&amp;gt;&amp;lt;/svg&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;div class=&amp;quot;orangehrm-copyright-wrapper&amp;quot;&amp;gt;&amp;lt;p data-v-7b563373=&amp;quot;&amp;quot; class=&amp;quot;oxd-text oxd-text--p orangehrm-copyright&amp;quot;&amp;gt;OrangeHRM OS 5.8&amp;lt;/p&amp;gt;&amp;lt;p data-v-7b563373=&amp;quot;&amp;quot; class=&amp;quot;oxd-text oxd-text--p orangehrm-copyright&amp;quot;&amp;gt;\u00a9 2005 - 2026 &amp;lt;a href=&amp;quot;http://www.orangehrm.com&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;OrangeHRM, Inc&amp;lt;/a&amp;gt;. All rights reserved.&amp;lt;/p&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;div data-v-6adfd385=&amp;quot;&amp;quot; class=&amp;quot;orangehrm-login-logo&amp;quot;&amp;gt;&amp;lt;img data-v-6adfd385=&amp;quot;&amp;quot; src=&amp;quot;/web/images/ohrm_logo.png&amp;quot; alt=&amp;quot;orangehrm-logo&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;div class=&amp;quot;oxd-toast-container oxd-toast-container--bottom&amp;quot; id=&amp;quot;oxd-toaster_1&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;\\n    &amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;\\n        window.appGlobal = {\\n          baseUrl: &amp;quot;/web/index.php&amp;quot;,\\n          publicPath: &amp;quot;/web&amp;quot;,\\n        };\\n    &amp;lt;/script&amp;gt;\\n    &amp;lt;script src=&amp;quot;/web/dist/js/chunk-vendors.js?v=1763650546848&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;\\n    &amp;lt;script src=&amp;quot;/web/dist/js/app.js?v=1763650546848&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;\\n\\n\\n&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&amp;#x27;\nE        +  where &amp;#x27;&amp;lt;html&amp;gt;&amp;lt;head&amp;gt;\\n  &amp;lt;meta charset=&amp;quot;UTF-8&amp;quot;&amp;gt;\\n  &amp;lt;meta http-equiv=&amp;quot;X-UA-Compatible&amp;quot; content=&amp;quot;IE=edge&amp;quot;&amp;gt;\\n  &amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device-width,initial-scale=1&amp;quot;&amp;gt;\\n  &amp;lt;title&amp;gt;OrangeHRM&amp;lt;/title&amp;gt;\\n      &amp;lt;link rel=&amp;quot;icon&amp;quot; href=&amp;quot;/web/dist/favicon.ico?v=1763650546848&amp;quot;&amp;gt;\\n    &amp;lt;link href=&amp;quot;/web/dist/css/chunk-vendors.css?v=1763650546848&amp;quot; rel=&amp;quot;preload&amp;quot; as=&amp;quot;style&amp;quot;&amp;gt;\\n    &amp;lt;link href=&amp;quot;/web/dist/css/app.css?v=1763650546848&amp;quot; rel=&amp;quot;preload&amp;quot; as=&amp;quot;style&amp;quot;&amp;gt;\\n    &amp;lt;link href=&amp;quot;/web/dist/js/chunk-vendors.js?v=1763650546848&amp;quot; rel=&amp;quot;preload&amp;quot; as=&amp;quot;script&amp;quot;&amp;gt;\\n    &amp;lt;link href=&amp;quot;/web/dist/js/app.js?v=1763650546848&amp;quot; rel=&amp;quot;preload&amp;quot; as=&amp;quot;script&amp;quot;&amp;gt;\\n      &amp;lt;link href=&amp;quot;/web/dist/css/chunk-vendors.css?v=1763650546848&amp;quot; rel=&amp;quot;stylesheet&amp;quot;&amp;gt;\\n    &amp;lt;link href=&amp;quot;/web/dist/css/app.css?v=1763650546848&amp;quot; rel=&amp;quot;stylesheet&amp;quot;&amp;gt;\\n&amp;lt;/head&amp;gt;\\n&amp;lt;body&amp;gt;\\n  &amp;lt;style&amp;gt;\\n    :root {\\n            --oxd-primary-one-color:#FF7B1D;\\n            --oxd-primary-font-color:#FFFFFF;\\n            --oxd-secondary-four-color:#76BC21;\\n            --oxd-secondary-font-color:#FFFFFF;\\n            --oxd-primary-gradient-start-color:#FF920B;\\n            --oxd-primary-gradient-end-color:#F35C17;\\n            --oxd-secondary-gradient-start-color:#FF920B;\\n            --oxd-seco....081 359.395 C 250.081 359.395 347.794 359.395 372.14 352.859 C 385.62 349.265 396.16 338.644 399.754 325.245 C 406.29 300.899 406.29 250 406.29 250 C 406.29 250 406.29 199.183 399.754 174.755 Z M 218.709 296.895 L 218.709 203.105 L 299.918 250 L 218.709 296.895 Z&amp;quot;&amp;gt;&amp;lt;/path&amp;gt;&amp;lt;/g&amp;gt;&amp;lt;/svg&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;div class=&amp;quot;orangehrm-copyright-wrapper&amp;quot;&amp;gt;&amp;lt;p data-v-7b563373=&amp;quot;&amp;quot; class=&amp;quot;oxd-text oxd-text--p orangehrm-copyright&amp;quot;&amp;gt;OrangeHRM OS 5.8&amp;lt;/p&amp;gt;&amp;lt;p data-v-7b563373=&amp;quot;&amp;quot; class=&amp;quot;oxd-text oxd-text--p orangehrm-copyright&amp;quot;&amp;gt;\u00a9 2005 - 2026 &amp;lt;a href=&amp;quot;http://www.orangehrm.com&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;OrangeHRM, Inc&amp;lt;/a&amp;gt;. All rights reserved.&amp;lt;/p&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;div data-v-6adfd385=&amp;quot;&amp;quot; class=&amp;quot;orangehrm-login-logo&amp;quot;&amp;gt;&amp;lt;img data-v-6adfd385=&amp;quot;&amp;quot; src=&amp;quot;/web/images/ohrm_logo.png&amp;quot; alt=&amp;quot;orangehrm-logo&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;div class=&amp;quot;oxd-toast-container oxd-toast-container--bottom&amp;quot; id=&amp;quot;oxd-toaster_1&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;\\n    &amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;\\n        window.appGlobal = {\\n          baseUrl: &amp;quot;/web/index.php&amp;quot;,\\n          publicPath: &amp;quot;/web&amp;quot;,\\n        };\\n    &amp;lt;/script&amp;gt;\\n    &amp;lt;script src=&amp;quot;/web/dist/js/chunk-vendors.js?v=1763650546848&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;\\n    &amp;lt;script src=&amp;quot;/web/dist/js/app.js?v=1763650546848&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;\\n\\n\\n&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&amp;#x27; = &amp;lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&amp;quot;09b6002e12d9d991c300785c5344c56f&amp;quot;)&amp;gt;.page_source\n\ntestCases/test_008_empty_credentials_validations.py:16: AssertionError\n\n---------------------------- Captured stdout setup -----------------------------\n\n========== Execution Info ==========\nBrowser   : chrome\nHeadless  : False\nGRID_URL  : None\n====================================\n\n&#34;}], &#34;testCases/test_009_buzz_post_creation.py::TestBuzz::test_buzz_post_creation&#34;: [{&#34;extras&#34;: [], &#34;result&#34;: &#34;Error&#34;, &#34;testId&#34;: &#34;testCases/test_009_buzz_post_creation.py::TestBuzz::test_buzz_post_creation::setup&#34;, &#34;duration&#34;: &#34;00:00:32&#34;, &#34;resultsTableRow&#34;: [&#34;&lt;td class=\&#34;col-result\&#34;&gt;Error&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-testId\&#34;&gt;testCases/test_009_buzz_post_creation.py::TestBuzz::test_buzz_post_creation::setup&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-duration\&#34;&gt;00:00:32&lt;/td&gt;&#34;, &#34;&lt;td class=\&#34;col-links\&#34;&gt;&lt;/td&gt;&#34;], &#34;log&#34;: &#34;browser = &amp;#x27;chrome&amp;#x27;, headless = False\n\n    @pytest.fixture()\n    def setup(browser, headless):\n    \n        driver = None\n        grid_url = os.getenv(&amp;quot;GRID_URL&amp;quot;)  # If running via Selenium Grid\n        docker_env = os.getenv(&amp;quot;DOCKER&amp;quot;)  # Optional custom flag\n    \n        print(f&amp;quot;\\n========== Execution Info ==========&amp;quot;)\n        print(f&amp;quot;Browser   : {browser}&amp;quot;)\n        print(f&amp;quot;Headless  : {headless}&amp;quot;)\n        print(f&amp;quot;GRID_URL  : {grid_url}&amp;quot;)\n        print(f&amp;quot;====================================\\n&amp;quot;)\n    \n        # ---------------- CHROME ---------------- #\n        if browser == &amp;quot;chrome&amp;quot;:\n    \n            options = ChromeOptions()\n    \n            if headless:\n                options.add_argument(&amp;quot;--headless=new&amp;quot;)\n    \n            options.add_argument(&amp;quot;--no-sandbox&amp;quot;)\n            options.add_argument(&amp;quot;--disable-dev-shm-usage&amp;quot;)\n            options.add_argument(&amp;quot;--disable-gpu&amp;quot;)\n            options.add_argument(&amp;quot;--window-size=1920,1080&amp;quot;)\n    \n            # \ud83d\udd25 If running inside Docker container (chromium installed)\n            if os.path.exists(&amp;quot;/usr/bin/chromium&amp;quot;):\n                options.binary_location = &amp;quot;/usr/bin/chromium&amp;quot;\n    \n            if grid_url:\n                driver = webdriver.Remote(\n                    command_executor=grid_url,\n                    options=options\n                )\n            else:\n                driver = webdriver.Chrome(options=options)\n    \n        # ---------------- FIREFOX ---------------- #\n        elif browser == &amp;quot;firefox&amp;quot;:\n    \n            options = FirefoxOptions()\n    \n            if headless:\n                options.add_argument(&amp;quot;--headless&amp;quot;)\n    \n            if grid_url:\n                driver = webdriver.Remote(\n                    command_executor=grid_url,\n                    options=options\n                )\n            else:\n                driver = webdriver.Firefox(options=options)\n    \n        # ---------------- EDGE ---------------- #\n        elif browser == &amp;quot;edge&amp;quot;:\n    \n            options = EdgeOptions()\n    \n            if headless:\n                options.add_argument(&amp;quot;--headless=new&amp;quot;)\n    \n            if grid_url:\n                driver = webdriver.Remote(\n                    command_executor=grid_url,\n                    options=options\n                )\n            else:\n                driver = webdriver.Edge(options=options)\n    \n        else:\n            raise ValueError(f&amp;quot;Browser not supported: {browser}&amp;quot;)\n    \n        driver.set_page_load_timeout(30)\n        driver.implicitly_wait(10)\n    \n&amp;gt;       driver.get(ReadConfig.get_url())\n\nconftest.py:107: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n.venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:357: in get\n    self.execute(Command.GET, {&amp;quot;url&amp;quot;: url})\n.venv/lib/python3.13/site-packages/selenium/webdriver/remote/webdriver.py:348: in execute\n    self.error_handler.check_response(response)\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = &amp;lt;selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x108f69400&amp;gt;\nresponse = {&amp;#x27;status&amp;#x27;: 500, &amp;#x27;value&amp;#x27;: &amp;#x27;{&amp;quot;value&amp;quot;:{&amp;quot;error&amp;quot;:&amp;quot;timeout&amp;quot;,&amp;quot;message&amp;quot;:&amp;quot;timeout: Timed out receiving message from renderer: 1...ff81a067e59 _pthread_start + 115\\\\n24  libsystem_pthread.dylib             0x00007ff81a063857 thread_start + 15\\\\n&amp;quot;}}&amp;#x27;}\n\n    def check_response(self, response: Dict[str, Any]) -&amp;gt; None:\n        &amp;quot;&amp;quot;&amp;quot;Checks that a JSON response from the WebDriver does not have an\n        error.\n    \n        :Args:\n         - response - The JSON response from the WebDriver server as a dictionary\n           object.\n    \n        :Raises: If the response contains an error message.\n        &amp;quot;&amp;quot;&amp;quot;\n        status = response.get(&amp;quot;status&amp;quot;, None)\n        if not status or status == ErrorCode.SUCCESS:\n            return\n        value = None\n        message = response.get(&amp;quot;message&amp;quot;, &amp;quot;&amp;quot;)\n        screen: str = response.get(&amp;quot;screen&amp;quot;, &amp;quot;&amp;quot;)\n        stacktrace = None\n        if isinstance(status, int):\n            value_json = response.get(&amp;quot;value&amp;quot;, None)\n            if value_json and isinstance(value_json, str):\n                import json\n    \n                try:\n                    value = json.loads(value_json)\n                    if len(value) == 1:\n                        value = value[&amp;quot;value&amp;quot;]\n                    status = value.get(&amp;quot;error&amp;quot;, None)\n                    if not status:\n                        status = value.get(&amp;quot;status&amp;quot;, ErrorCode.UNKNOWN_ERROR)\n                        message = value.get(&amp;quot;value&amp;quot;) or value.get(&amp;quot;message&amp;quot;)\n                        if not isinstance(message, str):\n                            value = message\n                            message = message.get(&amp;quot;message&amp;quot;)\n                    else:\n                        message = value.get(&amp;quot;message&amp;quot;, None)\n                except ValueError:\n                    pass\n    \n        exception_class: Type[WebDriverException]\n        e = ErrorCode()\n        error_codes = [item for item in dir(e) if not item.startswith(&amp;quot;__&amp;quot;)]\n        for error_code in error_codes:\n            error_info = getattr(ErrorCode, error_code)\n            if isinstance(error_info, list) and status in error_info:\n                exception_class = getattr(ExceptionMapping, error_code, WebDriverException)\n                break\n        else:\n            exception_class = WebDriverException\n    \n        if not value:\n            value = response[&amp;quot;value&amp;quot;]\n        if isinstance(value, str):\n            raise exception_class(value)\n        if message == &amp;quot;&amp;quot; and &amp;quot;message&amp;quot; in value:\n            message = value[&amp;quot;message&amp;quot;]\n    \n        screen = None  # type: ignore[assignment]\n        if &amp;quot;screen&amp;quot; in value:\n            screen = value[&amp;quot;screen&amp;quot;]\n    \n        stacktrace = None\n        st_value = value.get(&amp;quot;stackTrace&amp;quot;) or value.get(&amp;quot;stacktrace&amp;quot;)\n        if st_value:\n            if isinstance(st_value, str):\n                stacktrace = st_value.split(&amp;quot;\\n&amp;quot;)\n            else:\n                stacktrace = []\n                try:\n                    for frame in st_value:\n                        line = frame.get(&amp;quot;lineNumber&amp;quot;, &amp;quot;&amp;quot;)\n                        file = frame.get(&amp;quot;fileName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if line:\n                            file = f&amp;quot;{file}:{line}&amp;quot;\n                        meth = frame.get(&amp;quot;methodName&amp;quot;, &amp;quot;&amp;lt;anonymous&amp;gt;&amp;quot;)\n                        if &amp;quot;className&amp;quot; in frame:\n                            meth = f&amp;quot;{frame[&amp;#x27;className&amp;#x27;]}.{meth}&amp;quot;\n                        msg = &amp;quot;    at %s (%s)&amp;quot;\n                        msg = msg % (meth, file)\n                        stacktrace.append(msg)\n                except TypeError:\n                    pass\n        if exception_class == UnexpectedAlertPresentException:\n            alert_text = None\n            if &amp;quot;data&amp;quot; in value:\n                alert_text = value[&amp;quot;data&amp;quot;].get(&amp;quot;text&amp;quot;)\n            elif &amp;quot;alert&amp;quot; in value:\n                alert_text = value[&amp;quot;alert&amp;quot;].get(&amp;quot;text&amp;quot;)\n            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here\n&amp;gt;       raise exception_class(message, screen, stacktrace)\nE       selenium.common.exceptions.TimeoutException: Message: timeout: Timed out receiving message from renderer: 15.797\nE         (Session info: chrome=143.0.7499.170)\nE       Stacktrace:\nE       0   chromedriver                        0x000000010b2ef068 chromedriver + 6631528\nE       1   chromedriver                        0x000000010b2e5d1a chromedriver + 6593818\nE       2   chromedriver                        0x000000010ad06ccb chromedriver + 437451\nE       3   chromedriver                        0x000000010acee96f chromedriver + 338287\nE       4   chromedriver                        0x000000010acee69d chromedriver + 337565\nE       5   chromedriver                        0x000000010acec5a9 chromedriver + 329129\nE       6   chromedriver                        0x000000010acece7f chromedriver + 331391\nE       7   chromedriver                        0x000000010acfb860 chromedriver + 391264\nE       8   chromedriver                        0x000000010ad15373 chromedriver + 496499\nE       9   chromedriver                        0x000000010ad1b92b chromedriver + 522539\nE       10  chromedriver                        0x000000010aced561 chromedriver + 333153\nE       11  chromedriver                        0x000000010ad150e5 chromedriver + 495845\nE       12  chromedriver                        0x000000010ada6684 chromedriver + 1091204\nE       13  chromedriver                        0x000000010ad4afb7 chromedriver + 716727\nE       14  chromedriver                        0x000000010ad4bc81 chromedriver + 720001\nE       15  chromedriver                        0x000000010b2ac011 chromedriver + 6357009\nE       16  chromedriver                        0x000000010b2b0460 chromedriver + 6374496\nE       17  chromedriver                        0x000000010b287023 chromedriver + 6205475\nE       18  chromedriver                        0x000000010b2b0ed5 chromedriver + 6377173\nE       19  chromedriver                        0x000000010b275f01 chromedriver + 6135553\nE       20  chromedriver                        0x000000010b2d2a98 chromedriver + 6515352\nE       21  chromedriver                        0x000000010b2d2c53 chromedriver + 6515795\nE       22  chromedriver                        0x000000010b2e591c chromedriver + 6592796\nE       23  libsystem_pthread.dylib             0x00007ff81a067e59 _pthread_start + 115\nE       24  libsystem_pthread.dylib             0x00007ff81a063857 thread_start + 15\n\n.venv/lib/python3.13/site-packages/selenium/webdriver/remote/errorhandler.py:229: TimeoutException\n\n---------------------------- Captured stdout setup -----------------------------\n\n========== Execution Info ==========\nBrowser   : chrome\nHeadless  : False\nGRID_URL  : None\n====================================\n\n&#34;}]}, &#34;renderCollapsed&#34;: [&#34;passed&#34;], &#34;initialSort&#34;: &#34;result&#34;, &#34;title&#34;: &#34;report_2026-02-16_22-24-20.html&#34;}"></div>
+    <script>
+      (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+const { getCollapsedCategory, setCollapsedIds } = require('./storage.js')
+
+class DataManager {
+    setManager(data) {
+        const collapsedCategories = [...getCollapsedCategory(data.renderCollapsed)]
+        const collapsedIds = []
+        const tests = Object.values(data.tests).flat().map((test, index) => {
+            const collapsed = collapsedCategories.includes(test.result.toLowerCase())
+            const id = `test_${index}`
+            if (collapsed) {
+                collapsedIds.push(id)
+            }
+            return {
+                ...test,
+                id,
+                collapsed,
+            }
+        })
+        const dataBlob = { ...data, tests }
+        this.data = { ...dataBlob }
+        this.renderData = { ...dataBlob }
+        setCollapsedIds(collapsedIds)
+    }
+
+    get allData() {
+        return { ...this.data }
+    }
+
+    resetRender() {
+        this.renderData = { ...this.data }
+    }
+
+    setRender(data) {
+        this.renderData.tests = [...data]
+    }
+
+    toggleCollapsedItem(id) {
+        this.renderData.tests = this.renderData.tests.map((test) =>
+            test.id === id ? { ...test, collapsed: !test.collapsed } : test,
+        )
+    }
+
+    set allCollapsed(collapsed) {
+        this.renderData = { ...this.renderData, tests: [...this.renderData.tests.map((test) => (
+            { ...test, collapsed }
+        ))] }
+    }
+
+    get testSubset() {
+        return [...this.renderData.tests]
+    }
+
+    get environment() {
+        return this.renderData.environment
+    }
+
+    get initialSort() {
+        return this.data.initialSort
+    }
+}
+
+module.exports = {
+    manager: new DataManager(),
+}
+
+},{"./storage.js":8}],2:[function(require,module,exports){
+const mediaViewer = require('./mediaviewer.js')
+const templateEnvRow = document.getElementById('template_environment_row')
+const templateResult = document.getElementById('template_results-table__tbody')
+
+function htmlToElements(html) {
+    const temp = document.createElement('template')
+    temp.innerHTML = html
+    return temp.content.childNodes
+}
+
+const find = (selector, elem) => {
+    if (!elem) {
+        elem = document
+    }
+    return elem.querySelector(selector)
+}
+
+const findAll = (selector, elem) => {
+    if (!elem) {
+        elem = document
+    }
+    return [...elem.querySelectorAll(selector)]
+}
+
+const dom = {
+    getStaticRow: (key, value) => {
+        const envRow = templateEnvRow.content.cloneNode(true)
+        const isObj = typeof value === 'object' && value !== null
+        const values = isObj ? Object.keys(value).map((k) => `${k}: ${value[k]}`) : null
+
+        const valuesElement = htmlToElements(
+            values ? `<ul>${values.map((val) => `<li>${val}</li>`).join('')}<ul>` : `<div>${value}</div>`)[0]
+        const td = findAll('td', envRow)
+        td[0].textContent = key
+        td[1].appendChild(valuesElement)
+
+        return envRow
+    },
+    getResultTBody: ({ testId, id, log, extras, resultsTableRow, tableHtml, result, collapsed }) => {
+        const resultBody = templateResult.content.cloneNode(true)
+        resultBody.querySelector('tbody').classList.add(result.toLowerCase())
+        resultBody.querySelector('tbody').id = testId
+        resultBody.querySelector('.collapsible').dataset.id = id
+
+        resultsTableRow.forEach((html) => {
+            const t = document.createElement('template')
+            t.innerHTML = html
+            resultBody.querySelector('.collapsible').appendChild(t.content)
+        })
+
+        if (log) {
+            // Wrap lines starting with "E" with span.error to color those lines red
+            const wrappedLog = log.replace(/^E.*$/gm, (match) => `<span class="error">${match}</span>`)
+            resultBody.querySelector('.log').innerHTML = wrappedLog
+        } else {
+            resultBody.querySelector('.log').remove()
+        }
+
+        if (collapsed) {
+            resultBody.querySelector('.collapsible > td')?.classList.add('collapsed')
+            resultBody.querySelector('.extras-row').classList.add('hidden')
+        } else {
+            resultBody.querySelector('.collapsible > td')?.classList.remove('collapsed')
+        }
+
+        const media = []
+        extras?.forEach(({ name, format_type, content }) => {
+            if (['image', 'video'].includes(format_type)) {
+                media.push({ path: content, name, format_type })
+            }
+
+            if (format_type === 'html') {
+                resultBody.querySelector('.extraHTML').insertAdjacentHTML('beforeend', `<div>${content}</div>`)
+            }
+        })
+        mediaViewer.setup(resultBody, media)
+
+        // Add custom html from the pytest_html_results_table_html hook
+        tableHtml?.forEach((item) => {
+            resultBody.querySelector('td[class="extra"]').insertAdjacentHTML('beforeend', item)
+        })
+
+        return resultBody
+    },
+}
+
+module.exports = {
+    dom,
+    htmlToElements,
+    find,
+    findAll,
+}
+
+},{"./mediaviewer.js":6}],3:[function(require,module,exports){
+const { manager } = require('./datamanager.js')
+const { doSort } = require('./sort.js')
+const storageModule = require('./storage.js')
+
+const getFilteredSubSet = (filter) =>
+    manager.allData.tests.filter(({ result }) => filter.includes(result.toLowerCase()))
+
+const doInitFilter = () => {
+    const currentFilter = storageModule.getVisible()
+    const filteredSubset = getFilteredSubSet(currentFilter)
+    manager.setRender(filteredSubset)
+}
+
+const doFilter = (type, show) => {
+    if (show) {
+        storageModule.showCategory(type)
+    } else {
+        storageModule.hideCategory(type)
+    }
+
+    const currentFilter = storageModule.getVisible()
+    const filteredSubset = getFilteredSubSet(currentFilter)
+    manager.setRender(filteredSubset)
+
+    const sortColumn = storageModule.getSort()
+    doSort(sortColumn, true)
+}
+
+module.exports = {
+    doFilter,
+    doInitFilter,
+}
+
+},{"./datamanager.js":1,"./sort.js":7,"./storage.js":8}],4:[function(require,module,exports){
+const { redraw, bindEvents, renderStatic } = require('./main.js')
+const { doInitFilter } = require('./filter.js')
+const { doInitSort } = require('./sort.js')
+const { manager } = require('./datamanager.js')
+const data = JSON.parse(document.getElementById('data-container').dataset.jsonblob)
+
+function init() {
+    manager.setManager(data)
+    doInitFilter()
+    doInitSort()
+    renderStatic()
+    redraw()
+    bindEvents()
+}
+
+init()
+
+},{"./datamanager.js":1,"./filter.js":3,"./main.js":5,"./sort.js":7}],5:[function(require,module,exports){
+const { dom, find, findAll } = require('./dom.js')
+const { manager } = require('./datamanager.js')
+const { doSort } = require('./sort.js')
+const { doFilter } = require('./filter.js')
+const {
+    getVisible,
+    getCollapsedIds,
+    setCollapsedIds,
+    getSort,
+    getSortDirection,
+    possibleFilters,
+} = require('./storage.js')
+
+const removeChildren = (node) => {
+    while (node.firstChild) {
+        node.removeChild(node.firstChild)
+    }
+}
+
+const renderStatic = () => {
+    const renderEnvironmentTable = () => {
+        const environment = manager.environment
+        const rows = Object.keys(environment).map((key) => dom.getStaticRow(key, environment[key]))
+        const table = document.getElementById('environment')
+        removeChildren(table)
+        rows.forEach((row) => table.appendChild(row))
+    }
+    renderEnvironmentTable()
+}
+
+const addItemToggleListener = (elem) => {
+    elem.addEventListener('click', ({ target }) => {
+        const id = target.parentElement.dataset.id
+        manager.toggleCollapsedItem(id)
+
+        const collapsedIds = getCollapsedIds()
+        if (collapsedIds.includes(id)) {
+            const updated = collapsedIds.filter((item) => item !== id)
+            setCollapsedIds(updated)
+        } else {
+            collapsedIds.push(id)
+            setCollapsedIds(collapsedIds)
+        }
+        redraw()
+    })
+}
+
+const renderContent = (tests) => {
+    const sortAttr = getSort(manager.initialSort)
+    const sortAsc = JSON.parse(getSortDirection())
+    const rows = tests.map(dom.getResultTBody)
+    const table = document.getElementById('results-table')
+    const tableHeader = document.getElementById('results-table-head')
+
+    const newTable = document.createElement('table')
+    newTable.id = 'results-table'
+
+    // remove all sorting classes and set the relevant
+    findAll('.sortable', tableHeader).forEach((elem) => elem.classList.remove('asc', 'desc'))
+    tableHeader.querySelector(`.sortable[data-column-type="${sortAttr}"]`)?.classList.add(sortAsc ? 'desc' : 'asc')
+    newTable.appendChild(tableHeader)
+
+    if (!rows.length) {
+        const emptyTable = document.getElementById('template_results-table__body--empty').content.cloneNode(true)
+        newTable.appendChild(emptyTable)
+    } else {
+        rows.forEach((row) => {
+            if (!!row) {
+                findAll('.collapsible td:not(.col-links', row).forEach(addItemToggleListener)
+                find('.logexpander', row).addEventListener('click',
+                    (evt) => evt.target.parentNode.classList.toggle('expanded'),
+                )
+                newTable.appendChild(row)
+            }
+        })
+    }
+
+    table.replaceWith(newTable)
+}
+
+const renderDerived = () => {
+    const currentFilter = getVisible()
+    possibleFilters.forEach((result) => {
+        const input = document.querySelector(`input[data-test-result="${result}"]`)
+        input.checked = currentFilter.includes(result)
+    })
+}
+
+const bindEvents = () => {
+    const filterColumn = (evt) => {
+        const { target: element } = evt
+        const { testResult } = element.dataset
+
+        doFilter(testResult, element.checked)
+        const collapsedIds = getCollapsedIds()
+        const updated = manager.renderData.tests.map((test) => {
+            return {
+                ...test,
+                collapsed: collapsedIds.includes(test.id),
+            }
+        })
+        manager.setRender(updated)
+        redraw()
+    }
+
+    const header = document.getElementById('environment-header')
+    header.addEventListener('click', () => {
+        const table = document.getElementById('environment')
+        table.classList.toggle('hidden')
+        header.classList.toggle('collapsed')
+    })
+
+    findAll('input[name="filter_checkbox"]').forEach((elem) => {
+        elem.addEventListener('click', filterColumn)
+    })
+
+    findAll('.sortable').forEach((elem) => {
+        elem.addEventListener('click', (evt) => {
+            const { target: element } = evt
+            const { columnType } = element.dataset
+            doSort(columnType)
+            redraw()
+        })
+    })
+
+    document.getElementById('show_all_details').addEventListener('click', () => {
+        manager.allCollapsed = false
+        setCollapsedIds([])
+        redraw()
+    })
+    document.getElementById('hide_all_details').addEventListener('click', () => {
+        manager.allCollapsed = true
+        const allIds = manager.renderData.tests.map((test) => test.id)
+        setCollapsedIds(allIds)
+        redraw()
+    })
+}
+
+const redraw = () => {
+    const { testSubset } = manager
+
+    renderContent(testSubset)
+    renderDerived()
+}
+
+module.exports = {
+    redraw,
+    bindEvents,
+    renderStatic,
+}
+
+},{"./datamanager.js":1,"./dom.js":2,"./filter.js":3,"./sort.js":7,"./storage.js":8}],6:[function(require,module,exports){
+class MediaViewer {
+    constructor(assets) {
+        this.assets = assets
+        this.index = 0
+    }
+
+    nextActive() {
+        this.index = this.index === this.assets.length - 1 ? 0 : this.index + 1
+        return [this.activeFile, this.index]
+    }
+
+    prevActive() {
+        this.index = this.index === 0 ? this.assets.length - 1 : this.index -1
+        return [this.activeFile, this.index]
+    }
+
+    get currentIndex() {
+        return this.index
+    }
+
+    get activeFile() {
+        return this.assets[this.index]
+    }
+}
+
+
+const setup = (resultBody, assets) => {
+    if (!assets.length) {
+        resultBody.querySelector('.media').classList.add('hidden')
+        return
+    }
+
+    const mediaViewer = new MediaViewer(assets)
+    const container = resultBody.querySelector('.media-container')
+    const leftArrow = resultBody.querySelector('.media-container__nav--left')
+    const rightArrow = resultBody.querySelector('.media-container__nav--right')
+    const mediaName = resultBody.querySelector('.media__name')
+    const counter = resultBody.querySelector('.media__counter')
+    const imageEl = resultBody.querySelector('img')
+    const sourceEl = resultBody.querySelector('source')
+    const videoEl = resultBody.querySelector('video')
+
+    const setImg = (media, index) => {
+        if (media?.format_type === 'image') {
+            imageEl.src = media.path
+
+            imageEl.classList.remove('hidden')
+            videoEl.classList.add('hidden')
+        } else if (media?.format_type === 'video') {
+            sourceEl.src = media.path
+
+            videoEl.classList.remove('hidden')
+            imageEl.classList.add('hidden')
+        }
+
+        mediaName.innerText = media?.name
+        counter.innerText = `${index + 1} / ${assets.length}`
+    }
+    setImg(mediaViewer.activeFile, mediaViewer.currentIndex)
+
+    const moveLeft = () => {
+        const [media, index] = mediaViewer.prevActive()
+        setImg(media, index)
+    }
+    const doRight = () => {
+        const [media, index] = mediaViewer.nextActive()
+        setImg(media, index)
+    }
+    const openImg = () => {
+        window.open(mediaViewer.activeFile.path, '_blank')
+    }
+    if (assets.length === 1) {
+        container.classList.add('media-container--fullscreen')
+    } else {
+        leftArrow.addEventListener('click', moveLeft)
+        rightArrow.addEventListener('click', doRight)
+    }
+    imageEl.addEventListener('click', openImg)
+}
+
+module.exports = {
+    setup,
+}
+
+},{}],7:[function(require,module,exports){
+const { manager } = require('./datamanager.js')
+const storageModule = require('./storage.js')
+
+const genericSort = (list, key, ascending, customOrder) => {
+    let sorted
+    if (customOrder) {
+        sorted = list.sort((a, b) => {
+            const aValue = a.result.toLowerCase()
+            const bValue = b.result.toLowerCase()
+
+            const aIndex = customOrder.findIndex((item) => item.toLowerCase() === aValue)
+            const bIndex = customOrder.findIndex((item) => item.toLowerCase() === bValue)
+
+            // Compare the indices to determine the sort order
+            return aIndex - bIndex
+        })
+    } else {
+        sorted = list.sort((a, b) => a[key] === b[key] ? 0 : a[key] > b[key] ? 1 : -1)
+    }
+
+    if (ascending) {
+        sorted.reverse()
+    }
+    return sorted
+}
+
+const durationSort = (list, ascending) => {
+    const parseDuration = (duration) => {
+        if (duration.includes(':')) {
+            // If it's in the format "HH:mm:ss"
+            const [hours, minutes, seconds] = duration.split(':').map(Number)
+            return (hours * 3600 + minutes * 60 + seconds) * 1000
+        } else {
+            // If it's in the format "nnn ms"
+            return parseInt(duration)
+        }
+    }
+    const sorted = list.sort((a, b) => parseDuration(a['duration']) - parseDuration(b['duration']))
+    if (ascending) {
+        sorted.reverse()
+    }
+    return sorted
+}
+
+const doInitSort = () => {
+    const type = storageModule.getSort(manager.initialSort)
+    const ascending = storageModule.getSortDirection()
+    const list = manager.testSubset
+    const initialOrder = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed', 'Skipped', 'Passed']
+
+    storageModule.setSort(type)
+    storageModule.setSortDirection(ascending)
+
+    if (type?.toLowerCase() === 'original') {
+        manager.setRender(list)
+    } else {
+        let sortedList
+        switch (type) {
+        case 'duration':
+            sortedList = durationSort(list, ascending)
+            break
+        case 'result':
+            sortedList = genericSort(list, type, ascending, initialOrder)
+            break
+        default:
+            sortedList = genericSort(list, type, ascending)
+            break
+        }
+        manager.setRender(sortedList)
+    }
+}
+
+const doSort = (type, skipDirection) => {
+    const newSortType = storageModule.getSort(manager.initialSort) !== type
+    const currentAsc = storageModule.getSortDirection()
+    let ascending
+    if (skipDirection) {
+        ascending = currentAsc
+    } else {
+        ascending = newSortType ? false : !currentAsc
+    }
+    storageModule.setSort(type)
+    storageModule.setSortDirection(ascending)
+
+    const list = manager.testSubset
+    const sortedList = type === 'duration' ? durationSort(list, ascending) : genericSort(list, type, ascending)
+    manager.setRender(sortedList)
+}
+
+module.exports = {
+    doInitSort,
+    doSort,
+}
+
+},{"./datamanager.js":1,"./storage.js":8}],8:[function(require,module,exports){
+const possibleFilters = [
+    'passed',
+    'skipped',
+    'failed',
+    'error',
+    'xfailed',
+    'xpassed',
+    'rerun',
+]
+
+const getVisible = () => {
+    const url = new URL(window.location.href)
+    const settings = new URLSearchParams(url.search).get('visible')
+    const lower = (item) => {
+        const lowerItem = item.toLowerCase()
+        if (possibleFilters.includes(lowerItem)) {
+            return lowerItem
+        }
+        return null
+    }
+    return settings === null ?
+        possibleFilters :
+        [...new Set(settings?.split(',').map(lower).filter((item) => item))]
+}
+
+const hideCategory = (categoryToHide) => {
+    const url = new URL(window.location.href)
+    const visibleParams = new URLSearchParams(url.search).get('visible')
+    const currentVisible = visibleParams ? visibleParams.split(',') : [...possibleFilters]
+    const settings = [...new Set(currentVisible)].filter((f) => f !== categoryToHide).join(',')
+
+    url.searchParams.set('visible', settings)
+    window.history.pushState({}, null, unescape(url.href))
+}
+
+const showCategory = (categoryToShow) => {
+    if (typeof window === 'undefined') {
+        return
+    }
+    const url = new URL(window.location.href)
+    const currentVisible = new URLSearchParams(url.search).get('visible')?.split(',').filter(Boolean) ||
+        [...possibleFilters]
+    const settings = [...new Set([categoryToShow, ...currentVisible])]
+    const noFilter = possibleFilters.length === settings.length || !settings.length
+
+    noFilter ? url.searchParams.delete('visible') : url.searchParams.set('visible', settings.join(','))
+    window.history.pushState({}, null, unescape(url.href))
+}
+
+const getSort = (initialSort) => {
+    const url = new URL(window.location.href)
+    let sort = new URLSearchParams(url.search).get('sort')
+    if (!sort) {
+        sort = initialSort || 'result'
+    }
+    return sort
+}
+
+const setSort = (type) => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('sort', type)
+    window.history.pushState({}, null, unescape(url.href))
+}
+
+const getCollapsedCategory = (renderCollapsed) => {
+    let categories
+    if (typeof window !== 'undefined') {
+        const url = new URL(window.location.href)
+        const collapsedItems = new URLSearchParams(url.search).get('collapsed')
+        switch (true) {
+        case !renderCollapsed && collapsedItems === null:
+            categories = ['passed']
+            break
+        case collapsedItems?.length === 0 || /^["']{2}$/.test(collapsedItems):
+            categories = []
+            break
+        case /^all$/.test(collapsedItems) || collapsedItems === null && /^all$/.test(renderCollapsed):
+            categories = [...possibleFilters]
+            break
+        default:
+            categories = collapsedItems?.split(',').map((item) => item.toLowerCase()) || renderCollapsed
+            break
+        }
+    } else {
+        categories = []
+    }
+    return categories
+}
+
+const getSortDirection = () => JSON.parse(sessionStorage.getItem('sortAsc')) || false
+const setSortDirection = (ascending) => sessionStorage.setItem('sortAsc', ascending)
+
+const getCollapsedIds = () => JSON.parse(sessionStorage.getItem('collapsedIds')) || []
+const setCollapsedIds = (list) => sessionStorage.setItem('collapsedIds', JSON.stringify(list))
+
+module.exports = {
+    getVisible,
+    hideCategory,
+    showCategory,
+    getCollapsedIds,
+    setCollapsedIds,
+    getSort,
+    setSort,
+    getSortDirection,
+    setSortDirection,
+    getCollapsedCategory,
+    possibleFilters,
+}
+
+},{}]},{},[4]);
+    </script>
+  </footer>
+</html>

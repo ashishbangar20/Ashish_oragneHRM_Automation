@@ -9,7 +9,7 @@ class TestInvalidLogin:
     logger = LogGen.loggen()
 
     @pytest.mark.regression
-    @pytest.mark.sanity
+    @pytest.mark.smoke
     def test_invalid_login(self, setup):
 
         self.logger.info("Invalid Login Test Started")

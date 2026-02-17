@@ -453,3 +453,43 @@
 2026-02-16 21:21:46,640 - INFO - Test Buzz Post Creation Started
 2026-02-16 21:23:49,859 - INFO - Test Buzz Post Creation Started
 2026-02-16 21:23:56,490 - INFO - Buzz Post Button Clicked Successfully
+2026-02-16 22:25:04,728 - INFO - Test Login Started
+2026-02-16 22:25:10,568 - INFO - Login Test Passed
+2026-02-16 22:25:42,391 - INFO - ========== Starting DDT Login Test ==========
+2026-02-16 22:25:42,437 - INFO - Row 2 | Username: Admin | Expected: Valid
+2026-02-16 22:25:49,969 - INFO - Valid login successful
+2026-02-16 22:27:00,332 - INFO - ====== Starting Parametrized Login Test ======
+2026-02-16 22:27:00,352 - INFO - Username: Admin
+2026-02-16 22:27:00,353 - INFO - Expected: Invalid
+2026-02-16 22:27:07,565 - INFO - Invalid Login Correct
+2026-02-17 07:50:26,638 - INFO - Test Login Started
+2026-02-17 07:50:30,968 - INFO - Login Test Passed
+2026-02-17 07:50:38,329 - INFO - ========== Starting DDT Login Test ==========
+2026-02-17 07:50:38,356 - INFO - Row 2 | Username: Admin | Expected: Valid
+2026-02-17 07:50:41,863 - INFO - Valid login successful
+2026-02-17 07:50:48,612 - INFO - Row 3 | Username: Admin | Expected: Valid
+2026-02-17 07:50:52,993 - INFO - Valid login successful
+2026-02-17 07:50:56,122 - INFO - Row 4 | Username: Admin | Expected: Invalid
+2026-02-17 07:51:00,989 - INFO - Invalid login correctly failed
+2026-02-17 07:51:01,022 - INFO - Row 5 | Username: WrongUser | Expected: Invalid
+2026-02-17 07:51:04,863 - INFO - Invalid login correctly failed
+2026-02-17 07:51:04,884 - INFO - ========== DDT Login Test Completed ==========
+2026-02-17 07:51:12,219 - INFO - ====== Starting Parametrized Login Test ======
+2026-02-17 07:51:12,220 - INFO - Username: Admin
+2026-02-17 07:51:12,220 - INFO - Expected: Valid
+2026-02-17 07:51:17,460 - INFO - Login Passed
+2026-02-17 07:51:26,226 - INFO - ====== Starting Parametrized Login Test ======
+2026-02-17 07:51:26,247 - INFO - Username: Admin
+2026-02-17 07:51:26,247 - INFO - Expected: Invalid
+2026-02-17 07:51:31,531 - INFO - Invalid Login Correct
+2026-02-17 07:51:38,859 - INFO - ====== Starting Parametrized Login Test ======
+2026-02-17 07:51:38,879 - INFO - Username: WrongUser
+2026-02-17 07:51:38,880 - INFO - Expected: Invalid
+2026-02-17 07:51:43,820 - INFO - Invalid Login Correct
+2026-02-17 07:51:53,658 - INFO - ====== Starting Parametrized Login Test ======
+2026-02-17 07:51:53,659 - INFO - Username: WrongUser
+2026-02-17 07:51:53,659 - INFO - Expected: Invalid
+2026-02-17 07:51:58,978 - INFO - Invalid Login Correct
+2026-02-17 07:52:06,356 - INFO - Invalid Login Test Started
+2026-02-17 08:09:53,044 - INFO - Test Buzz Post Creation Started
+2026-02-17 08:10:00,509 - INFO - Buzz Post Button Clicked Successfully

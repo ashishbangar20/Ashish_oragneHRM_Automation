@@ -5,7 +5,7 @@ from pages.login_page import LoginPage
 class TestEmptyLogin:
 
     @pytest.mark.regression
-    @pytest.mark.sanity
+    @pytest.mark.smoke
     def test_empty_login(self, setup):
 
         driver = setup

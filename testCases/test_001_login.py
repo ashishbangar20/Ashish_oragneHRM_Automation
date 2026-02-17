@@ -10,7 +10,7 @@ class TestLogin:
 
     logger = LogGen.loggen()
 
-    @pytest.mark.sanity
+    @pytest.mark.smoke
     @pytest.mark.regression
     def test_login_valid(self, setup):
 

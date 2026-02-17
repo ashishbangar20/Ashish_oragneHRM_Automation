@@ -63,6 +63,20 @@ pipeline {
         stage('Run Tests in Docker') {
             steps {
                 script {
+
+                    // Default → smoke (smoke marker)
+                    def marker = "smoke"
+
+                    // If triggered by cron (nightly build) → full regression
+                    if (currentBuild.rawBuild.getCause(hudson.triggers.TimerTrigger$TimerTriggerCause)) {
+                        marker = "regression"
+                    }
+
+                    // If manually selected regression from dropdown
+                    if (params.TEST_SUITE == "regression") {
+                        marker = "regression"
+                    }
+
                     sh """
                     export DOCKER_HOST=$DOCKER_HOST
                     mkdir -p $REPORT_DIR
@@ -72,7 +86,7 @@ pipeline {
                     -v \$(pwd)/$REPORT_DIR:/app/$REPORT_DIR \
                     ${IMAGE_NAME}:${BUILD_NUMBER} \
                     pytest -n ${params.WORKERS} \
-                    -m ${params.TEST_SUITE == 'smoke' ? 'sanity' : 'regression'} \
+                    -m ${marker} \
                     --browser=${params.BROWSER} \
                     --headless=${params.HEADLESS} \
                     --html=$REPORT_DIR/report.html \

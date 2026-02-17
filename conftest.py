@@ -102,7 +102,6 @@ def setup(browser, headless):
         raise ValueError(f"Browser not supported: {browser}")
 
     driver.set_page_load_timeout(30)
-    driver.implicitly_wait(10)
 
     driver.get(ReadConfig.get_url())
 

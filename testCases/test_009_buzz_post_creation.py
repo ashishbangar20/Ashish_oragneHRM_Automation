@@ -11,7 +11,7 @@ class TestBuzz:
 
     logger = LogGen.loggen()
 
-    @pytest.mark.sanity
+    @pytest.mark.smoke
     @pytest.mark.regression
     def test_buzz_post_creation(self, setup):
 
