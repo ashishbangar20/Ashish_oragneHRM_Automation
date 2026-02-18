@@ -8,7 +8,7 @@ class BuzzPage(BasePage):
     POST_TEXT_AREA = (By.XPATH, "//textarea[contains(@class,'oxd-buzz-post-input')]")
     POST_BUTTON = (By.XPATH, "//button[@type='submit']")
     POST_CONTAINER = (By.XPATH, "//div[contains(@class,'orangehrm-buzz-newsfeed-posts')]")
-    LATEST_POST = (By.XPATH, "(//div[contains(@class,'oxd-buzz-post')]//p)[1]")
+    LATEST_POST = (By.XPATH, "//div[contains(@class,'orangehrm-buzz-post-body')]//p[1]")
 
     def click_buzz_menu(self):
         self.click(self.BUZZ_MENU)
