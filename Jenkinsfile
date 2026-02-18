@@ -16,7 +16,7 @@ pipeline {
         IMAGE_NAME = "ashish-orangehrm-automation"
         CONTAINER_NAME = "ashish-orangehrm-container"
         REPORT_DIR = "reports"
-        ALLURE_RESULTS = "allure-results"   // ✅ Added for Allure
+        ALLURE_RESULTS = "allure-results"
     }
 
     options {
@@ -65,6 +65,7 @@ pipeline {
             steps {
                 sh """
                 export DOCKER_HOST=$DOCKER_HOST
+
                 mkdir -p $REPORT_DIR
                 mkdir -p $ALLURE_RESULTS
 
@@ -94,22 +95,25 @@ pipeline {
                     alwaysLinkToLastBuild: true,
                     keepAll: true,
                     reportDir: 'reports',
-                    reportFiles: 'report.html',
+                    reportFiles: '*.html',
                     reportName: 'OrangeHRM Automation Report'
                 ])
             }
         }
 
-        stage('Publish Allure Report') {   // ✅ Added Stage
+        stage('Publish Allure Report') {
             steps {
-                allure includeProperties: false,
-                jdk: '',
-                results: [[path: 'allure-results']]
+                allure(
+                    includeProperties: false,
+                    jdk: '',
+                    results: [[path: 'allure-results']]
+                )
             }
         }
     }
 
     post {
+
         always {
             sh """
             export DOCKER_HOST=$DOCKER_HOST

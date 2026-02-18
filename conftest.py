@@ -56,30 +56,35 @@ def setup(browser, headless):
         if os.path.exists("/usr/bin/chromium"):
             options.binary_location = "/usr/bin/chromium"
 
-        if grid_url:
-            driver = webdriver.Remote(command_executor=grid_url, options=options)
-        else:
-            driver = webdriver.Chrome(options=options)
+        driver = (
+            webdriver.Remote(command_executor=grid_url, options=options)
+            if grid_url else
+            webdriver.Chrome(options=options)
+        )
 
     elif browser == "firefox":
         options = FirefoxOptions()
+
         if headless:
             options.add_argument("--headless")
 
-        if grid_url:
-            driver = webdriver.Remote(command_executor=grid_url, options=options)
-        else:
-            driver = webdriver.Firefox(options=options)
+        driver = (
+            webdriver.Remote(command_executor=grid_url, options=options)
+            if grid_url else
+            webdriver.Firefox(options=options)
+        )
 
     elif browser == "edge":
         options = EdgeOptions()
+
         if headless:
             options.add_argument("--headless=new")
 
-        if grid_url:
-            driver = webdriver.Remote(command_executor=grid_url, options=options)
-        else:
-            driver = webdriver.Edge(options=options)
+        driver = (
+            webdriver.Remote(command_executor=grid_url, options=options)
+            if grid_url else
+            webdriver.Edge(options=options)
+        )
 
     else:
         raise ValueError(f"Browser not supported: {browser}")
@@ -88,7 +93,6 @@ def setup(browser, headless):
     driver.get(ReadConfig.get_url())
 
     yield driver
-
     driver.quit()
 
 
@@ -96,19 +100,14 @@ def setup(browser, headless):
 
 def pytest_configure(config):
 
-    # ✅ Force Allure results directory (important)
-    if not config.option.allure_report_dir:
-        config.option.allure_report_dir = "allure-results"
-
+    # ✅ Ensure Allure folder always exists
     os.makedirs("allure-results", exist_ok=True)
 
-    # ---------- HTML REPORT (UNCHANGED) ----------
+    # ---------- HTML REPORT ----------
     os.makedirs("reports", exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    report_path = f"reports/report_{timestamp}.html"
-
-    config.option.htmlpath = report_path
+    config.option.htmlpath = f"reports/report_{timestamp}.html"
     config.option.self_contained_html = True
 
     if hasattr(config, "stash"):
@@ -139,7 +138,7 @@ def pytest_runtest_makereport(item):
             driver.save_screenshot(file_path)
             print(f"Screenshot saved: {file_path}")
 
-            # ✅ Attach screenshot to Allure
+            # ✅ Attach to Allure
             allure.attach(
                 driver.get_screenshot_as_png(),
                 name="Failure Screenshot",
@@ -151,19 +150,23 @@ def pytest_runtest_makereport(item):
 
 def pytest_sessionfinish(session, exitstatus):
 
-    # 🚫 Do NOT open Allure in Jenkins/Docker
+    # 🚫 Never open reports inside Jenkins or Docker
     if os.getenv("JENKINS_HOME") or os.getenv("GRID_URL"):
         return
 
-    # Open HTML locally
+    # ---------- Open HTML Locally ----------
     htmlpath = session.config.option.htmlpath
     if htmlpath:
         import webbrowser
         webbrowser.open_new_tab(f"file://{os.path.abspath(htmlpath)}")
 
-    # Open Allure locally
+    # ---------- Open Allure Locally (if CLI installed) ----------
     if os.path.exists("allure-results"):
-        subprocess.run(
-            ["allure", "generate", "allure-results", "-o", "allure-report", "--clean"]
-        )
-        subprocess.run(["allure", "open", "allure-report"])
+        try:
+            subprocess.run(
+                ["allure", "generate", "allure-results", "-o", "allure-report", "--clean"],
+                check=True
+            )
+            subprocess.run(["allure", "open", "allure-report"], check=True)
+        except FileNotFoundError:
+            print("Allure CLI not installed. Skipping auto-open.")
