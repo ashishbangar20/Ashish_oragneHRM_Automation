@@ -1,5 +1,7 @@
 import os
 import pytest
+import allure
+import subprocess
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
@@ -32,18 +34,15 @@ def headless(request):
 def setup(browser, headless):
 
     driver = None
-    grid_url = os.getenv("GRID_URL")  # If running via Selenium Grid
-    docker_env = os.getenv("DOCKER")  # Optional custom flag
+    grid_url = os.getenv("GRID_URL")
 
-    print(f"\n========== Execution Info ==========")
+    print("\n========== Execution Info ==========")
     print(f"Browser   : {browser}")
     print(f"Headless  : {headless}")
     print(f"GRID_URL  : {grid_url}")
-    print(f"====================================\n")
+    print("====================================\n")
 
-    # ---------------- CHROME ---------------- #
     if browser == "chrome":
-
         options = ChromeOptions()
 
         if headless:
@@ -54,47 +53,31 @@ def setup(browser, headless):
         options.add_argument("--disable-gpu")
         options.add_argument("--window-size=1920,1080")
 
-        # 🔥 If running inside Docker container (chromium installed)
         if os.path.exists("/usr/bin/chromium"):
             options.binary_location = "/usr/bin/chromium"
 
         if grid_url:
-            driver = webdriver.Remote(
-                command_executor=grid_url,
-                options=options
-            )
+            driver = webdriver.Remote(command_executor=grid_url, options=options)
         else:
             driver = webdriver.Chrome(options=options)
 
-    # ---------------- FIREFOX ---------------- #
     elif browser == "firefox":
-
         options = FirefoxOptions()
-
         if headless:
             options.add_argument("--headless")
 
         if grid_url:
-            driver = webdriver.Remote(
-                command_executor=grid_url,
-                options=options
-            )
+            driver = webdriver.Remote(command_executor=grid_url, options=options)
         else:
             driver = webdriver.Firefox(options=options)
 
-    # ---------------- EDGE ---------------- #
     elif browser == "edge":
-
         options = EdgeOptions()
-
         if headless:
             options.add_argument("--headless=new")
 
         if grid_url:
-            driver = webdriver.Remote(
-                command_executor=grid_url,
-                options=options
-            )
+            driver = webdriver.Remote(command_executor=grid_url, options=options)
         else:
             driver = webdriver.Edge(options=options)
 
@@ -102,7 +85,6 @@ def setup(browser, headless):
         raise ValueError(f"Browser not supported: {browser}")
 
     driver.implicitly_wait(5)
-
     driver.get(ReadConfig.get_url())
 
     yield driver
@@ -110,10 +92,22 @@ def setup(browser, headless):
     driver.quit()
 
 
-# ================= HTML REPORT CONFIG ================= #
+# ================= REPORT CONFIG ================= #
 
 def pytest_configure(config):
 
+    # ✅ Ensure Allure results always enabled
+    if not hasattr(config.option, "allure_report_dir") or not config.option.allure_report_dir:
+        config.option.allure_report_dir = "allure-results"
+
+    # Clean previous results
+    if os.path.exists("allure-results"):
+        for file in os.listdir("allure-results"):
+            os.remove(os.path.join("allure-results", file))
+    else:
+        os.makedirs("allure-results")
+
+    # ---------- HTML REPORT (UNCHANGED) ----------
     os.makedirs("reports", exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -148,21 +142,33 @@ def pytest_runtest_makereport(item):
             file_path = os.path.join("screenshots", file_name)
 
             driver.save_screenshot(file_path)
-
             print(f"Screenshot saved: {file_path}")
 
+            # ✅ Attach to Allure
+            allure.attach(
+                driver.get_screenshot_as_png(),
+                name="Failure Screenshot",
+                attachment_type=allure.attachment_type.PNG
+            )
 
-# ================= OPEN REPORT LOCALLY ================= #
+
+# ================= SESSION FINISH ================= #
 
 def pytest_sessionfinish(session, exitstatus):
 
-    htmlpath = session.config.option.htmlpath
+    # Don't auto-open in CI
+    if os.getenv("JENKINS_HOME") or os.getenv("GRID_URL"):
+        return
 
-    # Open only when running locally (not Jenkins / Docker / Grid)
-    if (
-        htmlpath
-        and os.getenv("JENKINS_HOME") is None
-        and os.getenv("GRID_URL") is None
-    ):
+    # ---------- OPEN HTML ----------
+    htmlpath = session.config.option.htmlpath
+    if htmlpath:
         import webbrowser
         webbrowser.open_new_tab(f"file://{os.path.abspath(htmlpath)}")
+
+    # ---------- GENERATE & OPEN ALLURE ----------
+    if os.path.exists("allure-results"):
+        subprocess.run(
+            ["allure", "generate", "allure-results", "-o", "allure-report", "--clean"]
+        )
+        subprocess.run(["allure", "open", "allure-report"])

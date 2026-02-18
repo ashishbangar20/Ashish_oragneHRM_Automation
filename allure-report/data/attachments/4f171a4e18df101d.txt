@@ -1,0 +1,2 @@
+INFO     AutomationLogger:test_001_login.py:29 Test Login Started
+INFO     AutomationLogger:test_001_login.py:40 Test Login Completed Successfully

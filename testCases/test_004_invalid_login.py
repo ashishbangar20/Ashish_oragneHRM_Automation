@@ -1,28 +1,33 @@
 import pytest
+import allure
 from pages.login_page import LoginPage
-from utilities.custom_logger import LogGen
 
 
-class TestInvalidLogin:
+@allure.feature("Login Module")
+@allure.story("Invalid Login Validation")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.regression
+@pytest.mark.smoke
+def test_invalid_login(setup):
 
-    logger = LogGen.loggen()
+    driver = setup
+    login = LoginPage(driver)
 
-    @pytest.mark.regression
-    @pytest.mark.smoke
-    def test_invalid_login(self, setup):
+    allure.dynamic.title("Verify Invalid Login Shows Error Message")
+    allure.dynamic.description(
+        "Ensure that login fails with incorrect credentials "
+        "and appropriate error message is displayed."
+    )
 
-        driver = setup
-        login = LoginPage(driver)
-
-        self.logger.info("====== Invalid Login Test Started ======")
-
+    with allure.step("Enter invalid username"):
         login.enter_username("Admin")
+
+    with allure.step("Enter invalid password"):
         login.enter_password("wrongpass")
+
+    with allure.step("Click Login button"):
         login.click_login()
 
-        # Validate error message instead of URL
-        error_displayed = login.is_login_error_displayed()
-
-        assert error_displayed, "Error message not displayed for invalid login"
-
-        self.logger.info("====== Invalid Login Test Passed ======")
+    with allure.step("Verify error message is displayed"):
+        assert login.is_login_error_displayed(), \
+            "Error message not displayed for invalid login"

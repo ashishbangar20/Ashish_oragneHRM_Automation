@@ -16,6 +16,7 @@ pipeline {
         IMAGE_NAME = "ashish-orangehrm-automation"
         CONTAINER_NAME = "ashish-orangehrm-container"
         REPORT_DIR = "reports"
+        ALLURE_RESULTS = "allure-results"   // ✅ Added for Allure
     }
 
     options {
@@ -65,12 +66,14 @@ pipeline {
                 sh """
                 export DOCKER_HOST=$DOCKER_HOST
                 mkdir -p $REPORT_DIR
+                mkdir -p $ALLURE_RESULTS
 
                 echo "Running Test Suite: ${params.TEST_SUITE}"
 
                 $DOCKER run --rm \
                 --name $CONTAINER_NAME \
                 -v \$(pwd)/$REPORT_DIR:/app/$REPORT_DIR \
+                -v \$(pwd)/$ALLURE_RESULTS:/app/$ALLURE_RESULTS \
                 ${IMAGE_NAME}:${BUILD_NUMBER} \
                 pytest -n ${params.WORKERS} \
                 -m ${params.TEST_SUITE} \
@@ -78,6 +81,7 @@ pipeline {
                 --headless=${params.HEADLESS} \
                 --html=$REPORT_DIR/report.html \
                 --self-contained-html \
+                --alluredir=$ALLURE_RESULTS \
                 -v
                 """
             }
@@ -95,20 +99,28 @@ pipeline {
                 ])
             }
         }
+
+        stage('Publish Allure Report') {   // ✅ Added Stage
+            steps {
+                allure includeProperties: false,
+                jdk: '',
+                results: [[path: 'allure-results']]
+            }
+        }
     }
 
     post {
-    always {
-        sh """
-        export DOCKER_HOST=$DOCKER_HOST
-        $DOCKER rm -f $CONTAINER_NAME || true
-        """
-    }
+        always {
+            sh """
+            export DOCKER_HOST=$DOCKER_HOST
+            $DOCKER rm -f $CONTAINER_NAME || true
+            """
+        }
 
-    success {
-        emailext(
-            subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-            body: """
+        success {
+            emailext(
+                subject: "SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
 Build Successful
 
 Job: ${env.JOB_NAME}
@@ -119,14 +131,14 @@ Browser: ${params.BROWSER}
 Console:
 ${env.BUILD_URL}console
 """,
-            to: "ashishbangar20@gmail.com"
-        )
-    }
+                to: "ashishbangar20@gmail.com"
+            )
+        }
 
-    failure {
-        emailext(
-            subject: "FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-            body: """
+        failure {
+            emailext(
+                subject: "FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
 Build Failed
 
 Job: ${env.JOB_NAME}
@@ -137,9 +149,8 @@ Browser: ${params.BROWSER}
 Console:
 ${env.BUILD_URL}console
 """,
-            to: "ashishbangar20@gmail.com"
-        )
+                to: "ashishbangar20@gmail.com"
+            )
+        }
     }
-}
-
 }

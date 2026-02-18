@@ -1,17 +1,22 @@
 import pytest
+import allure
 from pages.login_page import LoginPage
 
 
-class TestEmptyLogin:
+@allure.feature("Login Module")
+@allure.story("Empty Credential Validation")
+@pytest.mark.regression
+@pytest.mark.smoke
+def test_empty_login(setup):
 
-    @pytest.mark.regression
-    @pytest.mark.smoke
-    def test_empty_login(self, setup):
+    driver = setup
+    login = LoginPage(driver)
 
-        driver = setup
-        login = LoginPage(driver)
+    allure.dynamic.title("Verify required validation message on empty login")
 
-        login.click_login()
+    # Click login without entering credentials
+    login.click_login()
 
-        assert login.is_required_error_displayed(), \
-            "Required error message not displayed"
+    # Validate required field error
+    assert login.is_required_error_displayed(), \
+        "Required error message not displayed"

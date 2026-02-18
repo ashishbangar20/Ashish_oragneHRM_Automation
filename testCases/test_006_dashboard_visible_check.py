@@ -1,29 +1,31 @@
 import pytest
+import allure
 from pages.login_page import LoginPage
 from pages.dashboard_page import DashboardPage
 from utilities.config_reader import ReadConfig
 
 
-class TestDashboard:
+@allure.feature("Dashboard Module")
+@allure.story("Dashboard Load Verification")
+@pytest.mark.smoke
+@pytest.mark.regression
+def test_dashboard_loaded(setup):
 
-    @pytest.mark.smoke
-    @pytest.mark.regression
-    def test_dashboard_loaded(self, setup):
+    driver = setup
+    login = LoginPage(driver)
+    dashboard = DashboardPage(driver)
 
-        driver = setup
+    allure.dynamic.title("Verify dashboard loads after successful login")
 
-        login = LoginPage(driver)
-        dashboard = DashboardPage(driver)
+    # Login
+    login.login(
+        ReadConfig.get_username(),
+        ReadConfig.get_password()
+    )
 
-        # Login using reusable method
-        login.login(
-            ReadConfig.get_username(),
-            ReadConfig.get_password()
-        )
+    # Wait for dashboard
+    dashboard.wait_for_dashboard_menu()
 
-        # Wait for dashboard
-        dashboard.wait_for_dashboard_menu()
-
-        # Proper UI validation
-        assert dashboard.is_dashboard_displayed(), \
-            "Dashboard did not load after login"
+    # Validation
+    assert dashboard.is_dashboard_displayed(), \
+        "Dashboard did not load after login"

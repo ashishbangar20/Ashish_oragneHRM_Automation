@@ -1,28 +1,30 @@
 import pytest
+import allure
 from pages.login_page import LoginPage
 from pages.dashboard_page import DashboardPage
 from utilities.config_reader import ReadConfig
 
 
-class TestDashboard:
+@allure.feature("Dashboard Module")
+@allure.story("Dashboard Visibility")
+@pytest.mark.smoke
+@pytest.mark.regression
+def test_dashboard_loaded(setup):
 
-    @pytest.mark.smoke
-    @pytest.mark.regression
-    def test_dashboard_loaded(self, setup):
+    driver = setup
+    login = LoginPage(driver)
+    dashboard = DashboardPage(driver)
 
-        driver = setup
+    allure.dynamic.title("Verify Dashboard is displayed after successful login")
 
-        login = LoginPage(driver)
-        dashboard = DashboardPage(driver)
+    # Login
+    login.login(
+        ReadConfig.get_username(),
+        ReadConfig.get_password()
+    )
 
-        # Login
-        login.login(
-            ReadConfig.get_username(),
-            ReadConfig.get_password()
-        )
+    # Wait and Validate
+    dashboard.wait_for_dashboard_menu()
 
-        # Validate dashboard loaded
-        dashboard.wait_for_dashboard_menu()
-
-        assert dashboard.is_dashboard_displayed(), \
-            "Dashboard not displayed after login"
+    assert dashboard.is_dashboard_displayed(), \
+        "Dashboard not displayed after login"

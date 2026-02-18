@@ -1,45 +1,42 @@
 import pytest
 import time
+import allure
 from pages.login_page import LoginPage
 from pages.dashboard_page import DashboardPage
 from pages.buzz_page import BuzzPage
 from utilities.config_reader import ReadConfig
-from utilities.custom_logger import LogGen
 
 
-class TestBuzz:
+@allure.feature("Buzz Module")
+@allure.story("Create Buzz Post")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.smoke
+@pytest.mark.regression
+def test_buzz_post_creation(setup):
 
-    logger = LogGen.loggen()
+    driver = setup
+    login_page = LoginPage(driver)
+    dashboard_page = DashboardPage(driver)
+    buzz_page = BuzzPage(driver)
 
-    @pytest.mark.smoke
-    @pytest.mark.regression
-    def test_buzz_post_creation(self, setup):
+    allure.dynamic.title("Verify user can create a new Buzz post")
 
-        driver = setup
-        self.logger.info("====== Buzz Post Test Started ======")
+    # ---------- Login ----------
+    login_page.login(
+        ReadConfig.get_username(),
+        ReadConfig.get_password()
+    )
 
-        login_page = LoginPage(driver)
-        dashboard_page = DashboardPage(driver)
-        buzz_page = BuzzPage(driver)
+    dashboard_page.wait_for_dashboard_menu()
 
-        # Login
-        login_page.login(
-            ReadConfig.get_username(),
-            ReadConfig.get_password()
-        )
+    # ---------- Navigate to Buzz ----------
+    buzz_page.click_buzz_menu()
 
-        dashboard_page.wait_for_dashboard_menu()
+    # ---------- Create Unique Post ----------
+    post_message = f"Automation Buzz Post {int(time.time())}"
 
-        # Navigate to Buzz
-        buzz_page.click_buzz_menu()
+    buzz_page.post_message(post_message)
 
-        # Unique message
-        post_message = f"Automation Buzz Post {int(time.time())}"
-
-        buzz_page.post_message(post_message)
-
-        # Validate post created
-        assert buzz_page.is_post_present(post_message), \
-            "Buzz post not found after creation"
-
-        self.logger.info("====== Buzz Post Test Passed ======")
+    # ---------- Validate Post ----------
+    assert buzz_page.is_post_present(post_message), \
+        "Buzz post not found after creation"
