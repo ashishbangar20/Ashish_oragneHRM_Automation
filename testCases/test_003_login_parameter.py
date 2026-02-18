@@ -27,17 +27,31 @@ class TestLoginParametrized:
         self.logger.info("====== Login Test Started ======")
         self.logger.info(f"Username: {username} | Expected: {expected}")
 
+        # ---------- LOGIN ACTION ----------
         login_page.enter_username(username)
         login_page.enter_password(password)
         login_page.click_login()
 
-        is_dashboard = "dashboard" in driver.current_url.lower()
-
+        # ---------- VALID CASE ----------
         if expected == "Valid":
-            assert is_dashboard, "Valid login failed"
+
+            dashboard_page.wait_for_dashboard_menu()
+
+            assert dashboard_page.is_dashboard_displayed(), \
+                "Valid login failed - Dashboard not visible"
+
+            self.logger.info("Valid login successful")
+
+            # Cleanup: Logout for next iteration
             dashboard_page.click_logout()
             login_page.wait_for_login_page()
+
+        # ---------- INVALID CASE ----------
         else:
-            assert not is_dashboard, "Invalid login passed"
+
+            assert login_page.is_login_error_displayed(), \
+                "Invalid login passed - Error message not shown"
+
+            self.logger.info("Invalid login validation successful")
 
         self.logger.info("====== Login Test Completed ======")

@@ -664,3 +664,58 @@
 2026-02-18 18:29:53,796 - INFO - ====== Buzz Post Test Started ======
 2026-02-18 18:36:10,798 - INFO - ====== Buzz Post Test Started ======
 2026-02-18 18:36:18,850 - INFO - ====== Buzz Post Test Passed ======
+2026-02-18 18:54:56,142 - INFO - ====== Login Test Started ======
+2026-02-18 18:54:56,144 - INFO - Username: Admin | Expected: Valid
+2026-02-18 18:55:16,845 - INFO - ====== Login Test Completed ======
+2026-02-18 18:55:29,369 - INFO - ====== Login Test Started ======
+2026-02-18 18:55:29,388 - INFO - Username: Admin | Expected: Invalid
+2026-02-18 18:55:51,468 - INFO - ====== Login Test Completed ======
+2026-02-18 19:00:02,119 - INFO - ====== Buzz Post Test Started ======
+2026-02-18 19:00:31,809 - INFO - ====== Buzz Post Test Passed ======
+2026-02-18 19:18:23,717 - INFO - Test Login Started
+2026-02-18 19:18:28,441 - INFO - Test Login Completed Successfully
+2026-02-18 19:19:24,197 - INFO - ====== Login Test Started ======
+2026-02-18 19:19:24,218 - INFO - Username: Admin | Expected: Valid
+2026-02-18 19:19:38,741 - INFO - ====== Login Test Completed ======
+2026-02-18 19:19:48,971 - INFO - ====== Login Test Started ======
+2026-02-18 19:19:48,992 - INFO - Username: Admin | Expected: Invalid
+2026-02-18 19:19:52,132 - INFO - ====== Login Test Completed ======
+2026-02-18 19:20:02,397 - INFO - ====== Login Test Started ======
+2026-02-18 19:20:02,415 - INFO - Username: WrongUser | Expected: Invalid
+2026-02-18 19:20:05,827 - INFO - ====== Login Test Completed ======
+2026-02-18 19:20:16,641 - INFO - ====== Login Test Started ======
+2026-02-18 19:20:16,659 - INFO - Username: WrongUser | Expected: Invalid
+2026-02-18 19:20:20,474 - INFO - ====== Login Test Completed ======
+2026-02-18 19:24:34,609 - INFO - Test Login Started
+2026-02-18 19:24:39,188 - INFO - Test Login Completed Successfully
+2026-02-18 19:26:33,663 - INFO - ====== Login Test Started ======
+2026-02-18 19:26:33,683 - INFO - Username: Admin | Expected: Valid
+2026-02-18 19:26:49,317 - INFO - ====== Login Test Started ======
+2026-02-18 19:26:49,337 - INFO - Username: Admin | Expected: Invalid
+2026-02-18 19:26:53,093 - INFO - ====== Login Test Completed ======
+2026-02-18 19:27:04,147 - INFO - ====== Login Test Started ======
+2026-02-18 19:27:04,165 - INFO - Username: WrongUser | Expected: Invalid
+2026-02-18 19:27:07,516 - INFO - ====== Login Test Completed ======
+2026-02-18 19:27:16,071 - INFO - ====== Login Test Started ======
+2026-02-18 19:27:16,071 - INFO - Username: WrongUser | Expected: Invalid
+2026-02-18 19:27:19,238 - INFO - ====== Login Test Completed ======
+2026-02-18 19:27:27,001 - INFO - ====== Invalid Login Test Started ======
+2026-02-18 19:27:32,351 - INFO - ====== Invalid Login Test Passed ======
+2026-02-18 19:29:09,657 - INFO - ====== Buzz Post Test Started ======
+2026-02-18 19:29:33,728 - INFO - ====== Buzz Post Test Passed ======
+2026-02-18 19:33:47,007 - INFO - ====== Login Test Started ======
+2026-02-18 19:33:47,007 - INFO - Username: Admin | Expected: Valid
+2026-02-18 19:34:00,458 - INFO - Valid login successful
+2026-02-18 19:34:23,338 - INFO - ====== Login Test Completed ======
+2026-02-18 19:34:38,375 - INFO - ====== Login Test Started ======
+2026-02-18 19:34:38,396 - INFO - Username: Admin | Expected: Invalid
+2026-02-18 19:34:56,089 - INFO - Invalid login validation successful
+2026-02-18 19:34:56,089 - INFO - ====== Login Test Completed ======
+2026-02-18 19:35:11,855 - INFO - ====== Login Test Started ======
+2026-02-18 19:35:11,874 - INFO - Username: WrongUser | Expected: Invalid
+2026-02-18 19:35:22,122 - INFO - Invalid login validation successful
+2026-02-18 19:35:22,123 - INFO - ====== Login Test Completed ======
+2026-02-18 19:35:35,895 - INFO - ====== Login Test Started ======
+2026-02-18 19:35:35,913 - INFO - Username: WrongUser | Expected: Invalid
+2026-02-18 19:35:41,094 - INFO - Invalid login validation successful
+2026-02-18 19:35:41,094 - INFO - ====== Login Test Completed ======
