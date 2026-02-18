@@ -3,7 +3,6 @@ from pages.login_page import LoginPage
 from utilities.custom_logger import LogGen
 
 
-
 class TestInvalidLogin:
 
     logger = LogGen.loggen()
@@ -12,13 +11,18 @@ class TestInvalidLogin:
     @pytest.mark.smoke
     def test_invalid_login(self, setup):
 
-        self.logger.info("Invalid Login Test Started")
-
         driver = setup
         login = LoginPage(driver)
+
+        self.logger.info("====== Invalid Login Test Started ======")
 
         login.enter_username("Admin")
         login.enter_password("wrongpass")
         login.click_login()
 
-        assert "dashboard" not in driver.current_url.lower()
+        # Validate error message instead of URL
+        error_displayed = login.is_login_error_displayed()
+
+        assert error_displayed, "Error message not displayed for invalid login"
+
+        self.logger.info("====== Invalid Login Test Passed ======")

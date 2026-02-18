@@ -1,5 +1,4 @@
 import pytest
-import time
 from pages.login_page import LoginPage
 from pages.dashboard_page import DashboardPage
 from utilities.custom_logger import LogGen
@@ -21,41 +20,24 @@ class TestLoginParametrized:
     @pytest.mark.parametrize("username,password,expected", test_data)
     def test_login_param(self, setup, username, password, expected):
 
-        self.logger.info("====== Starting Parametrized Login Test ======")
-        self.logger.info(f"Username: {username}")
-        self.logger.info(f"Expected: {expected}")
-
         driver = setup
-
         login_page = LoginPage(driver)
         dashboard_page = DashboardPage(driver)
+
+        self.logger.info("====== Login Test Started ======")
+        self.logger.info(f"Username: {username} | Expected: {expected}")
 
         login_page.enter_username(username)
         login_page.enter_password(password)
         login_page.click_login()
 
-        time.sleep(2)
-
         is_dashboard = "dashboard" in driver.current_url.lower()
 
-        # ✅ VALID CASE
         if expected == "Valid":
+            assert is_dashboard, "Valid login failed"
+            dashboard_page.click_logout()
+            login_page.wait_for_login_page()
+        else:
+            assert not is_dashboard, "Invalid login passed"
 
-            if is_dashboard:
-                self.logger.info("Login Passed")
-                dashboard_page.click_logout()
-                assert True
-            else:
-                self.logger.error("Login Failed")
-                assert False
-
-        # ❌ INVALID CASE
-        elif expected == "Invalid":
-
-            if not is_dashboard:
-                self.logger.info("Invalid Login Correct")
-                assert True
-            else:
-                self.logger.error("Invalid Login Passed")
-                dashboard_page.click_logout()
-                assert False
+        self.logger.info("====== Login Test Completed ======")

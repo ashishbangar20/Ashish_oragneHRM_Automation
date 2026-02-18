@@ -13,4 +13,5 @@ class TestEmptyLogin:
 
         login.click_login()
 
-        assert "Required" in driver.page_source
+        assert login.is_required_error_displayed(), \
+            "Required error message not displayed"

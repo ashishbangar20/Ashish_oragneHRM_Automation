@@ -16,28 +16,30 @@ class TestBuzz:
     def test_buzz_post_creation(self, setup):
 
         driver = setup
-        self.logger.info("Test Buzz Post Creation Started")
+        self.logger.info("====== Buzz Post Test Started ======")
 
         login_page = LoginPage(driver)
         dashboard_page = DashboardPage(driver)
         buzz_page = BuzzPage(driver)
 
-        username = ReadConfig.get_username()
-        password = ReadConfig.get_password()
-
         # Login
-        login_page.enter_username(username)
-        login_page.enter_password(password)
-        login_page.click_login()
+        login_page.login(
+            ReadConfig.get_username(),
+            ReadConfig.get_password()
+        )
+
         dashboard_page.wait_for_dashboard_menu()
 
         # Navigate to Buzz
         buzz_page.click_buzz_menu()
 
-        # Unique post message
+        # Unique message
         post_message = f"Automation Buzz Post {int(time.time())}"
 
-        buzz_page.enter_post_message(post_message)
-        buzz_page.click_post_button()
+        buzz_page.post_message(post_message)
 
-        self.logger.info("Buzz Post Button Clicked Successfully")
+        # Validate post created
+        assert buzz_page.is_post_present(post_message), \
+            "Buzz post not found after creation"
+
+        self.logger.info("====== Buzz Post Test Passed ======")

@@ -1,6 +1,7 @@
 import pytest
 from pages.login_page import LoginPage
 from pages.dashboard_page import DashboardPage
+from utilities.config_reader import ReadConfig
 
 
 class TestLogout:
@@ -13,12 +14,18 @@ class TestLogout:
         login = LoginPage(driver)
         dashboard = DashboardPage(driver)
 
-        login.enter_username("Admin")
-        login.enter_password("admin123")
+        # Login
+        login.enter_username(ReadConfig.get_username())
+        login.enter_password(ReadConfig.get_password())
         login.click_login()
 
-
         dashboard.wait_for_dashboard_menu()
+
+        # Logout
         dashboard.click_logout()
 
-        assert "login" in driver.current_url.lower()
+        # Wait for login page
+        login.wait_for_login_page()
+
+        # Validate login page visible
+        assert login.is_login_page_displayed(), "Logout failed - Login page not visible"
