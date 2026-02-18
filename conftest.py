@@ -96,16 +96,11 @@ def setup(browser, headless):
 
 def pytest_configure(config):
 
-    # ✅ Ensure Allure results always enabled
-    if not hasattr(config.option, "allure_report_dir") or not config.option.allure_report_dir:
+    # ✅ Force Allure results directory (important)
+    if not config.option.allure_report_dir:
         config.option.allure_report_dir = "allure-results"
 
-    # Clean previous results
-    if os.path.exists("allure-results"):
-        for file in os.listdir("allure-results"):
-            os.remove(os.path.join("allure-results", file))
-    else:
-        os.makedirs("allure-results")
+    os.makedirs("allure-results", exist_ok=True)
 
     # ---------- HTML REPORT (UNCHANGED) ----------
     os.makedirs("reports", exist_ok=True)
@@ -144,7 +139,7 @@ def pytest_runtest_makereport(item):
             driver.save_screenshot(file_path)
             print(f"Screenshot saved: {file_path}")
 
-            # ✅ Attach to Allure
+            # ✅ Attach screenshot to Allure
             allure.attach(
                 driver.get_screenshot_as_png(),
                 name="Failure Screenshot",
@@ -156,17 +151,17 @@ def pytest_runtest_makereport(item):
 
 def pytest_sessionfinish(session, exitstatus):
 
-    # Don't auto-open in CI
+    # 🚫 Do NOT open Allure in Jenkins/Docker
     if os.getenv("JENKINS_HOME") or os.getenv("GRID_URL"):
         return
 
-    # ---------- OPEN HTML ----------
+    # Open HTML locally
     htmlpath = session.config.option.htmlpath
     if htmlpath:
         import webbrowser
         webbrowser.open_new_tab(f"file://{os.path.abspath(htmlpath)}")
 
-    # ---------- GENERATE & OPEN ALLURE ----------
+    # Open Allure locally
     if os.path.exists("allure-results"):
         subprocess.run(
             ["allure", "generate", "allure-results", "-o", "allure-report", "--clean"]

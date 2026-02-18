@@ -1,0 +1,2 @@
+[32mINFO    [0m AutomationLogger:test_001_login.py:29 Test Login Started
+[32mINFO    [0m AutomationLogger:test_001_login.py:40 Test Login Completed Successfully
