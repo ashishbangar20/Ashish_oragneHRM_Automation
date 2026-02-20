@@ -1,24 +1,20 @@
 import os
-import configparser
+from dotenv import load_dotenv
 
-config = configparser.RawConfigParser()
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-config_path = os.path.join(BASE_DIR, "config", "config.ini")
-
-config.read(config_path)
-
+# Load .env file
+load_dotenv()
 
 class ReadConfig:
 
     @staticmethod
     def get_url():
-        return config.get('common info', 'baseURL')
+        return os.getenv("BASE_URL")
 
     @staticmethod
     def get_username():
-        return config.get('common info', 'username')
+        return os.getenv("USERNAME")
 
     @staticmethod
     def get_password():
-        return config.get('common info', 'password')
+        return os.getenv("PASSWORD")
+

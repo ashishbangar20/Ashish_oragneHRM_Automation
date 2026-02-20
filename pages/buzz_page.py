@@ -34,5 +34,6 @@ class BuzzPage(BasePage):
             self.find_element(self.POST_CONTAINER)
             latest_post_text = self.get_text(self.LATEST_POST)
             return message.strip() == latest_post_text.strip()
-        except:
+        except Exception as e:
+            print(e)
             return False
